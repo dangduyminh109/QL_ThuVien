@@ -1,0 +1,189 @@
+﻿.create, .detail, .edit {
+    color: var(--text-color-3);
+}
+    .create label, .detail label, .edit label {
+        display: block;
+        margin-top: 20px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .create .label, .detail .label, .edit .label {
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .create textarea, .detail textarea, .edit textarea {
+        outline: none;
+    }
+
+    .create select, .detail select, .edit select {
+        height: 30px;
+        outline: none;
+    }
+
+    .create .title, .detail .title, .edit .title {
+        margin: 10px 0;
+        font-size: 2rem;
+    }
+
+    .create .general, .detail .general, .edit .general {
+        padding: 10px;
+        border: 1px dashed var(--text-color-3);
+        border-radius: 5px;
+    }
+
+    .create .status, .detail .status, .edit .status {
+        background-color: #ccc;
+        padding: 5px 10px;
+        border-radius: 5px;
+        display: inline-block;
+        margin: 5px 0 0;
+    }
+
+        .create .status.active, .detail .status.active, .edit .status.active {
+            color: var(--page-bg-color);
+            background-color: green;
+        }
+
+    .create .form-group, .detail .form-group, .edit .form-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+        .create .form-group .content::first-letter, .detail .form-group .content::first-letter, .edit .form-group .content::first-letter {
+            text-transform: uppercase;
+        }
+
+        .create .form-group input, .detail .form-group input, .edit .form-group input, .create .form-group textarea, .detail .form-group textarea, .edit .form-group textarea, .create .form-group select, .detail .form-group select, .edit .form-group select {
+            width: 100%;
+            border: 1px solid var(--text-color);
+            border-radius: 3px;
+            font-size: 1.8rem;
+            color: var(--text-color-3);
+            height: 30px;
+        }
+
+    .create .form-item, .detail .form-item, .edit .form-item {
+        flex: 1;
+    }
+
+    .create .add-more, .detail .add-more, .edit .add-more {
+        align-self: flex-end;
+    }
+
+    .create .add-more__title, .detail .add-more__title, .edit .add-more__title {
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    .create .add-more__btn, .detail .add-more__btn, .edit .add-more__btn {
+        color: #fff;
+        background-color: var(--primary);
+        width: 25%;
+    }
+
+        .create .add-more__btn:hover, .detail .add-more__btn:hover, .edit .add-more__btn:hover {
+            background-color: var(--color-hover);
+        }
+
+    .create .btn-status .form-check-input, .detail .btn-status .form-check-input, .edit .btn-status .form-check-input, .create .btn-featured .form-check-input, .detail .btn-featured .form-check-input, .edit .btn-featured .form-check-input {
+        width: 45px;
+    }
+
+    .create .form-group__btn, .detail .form-group__btn, .edit .form-group__btn {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .create .image, .detail .image, .edit .image {
+        padding: 20px;
+        border: 1px dashed var(--text-color-3);
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+
+    .create .image-group, .detail .image-group, .edit .image-group {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+    }
+
+        .create .image-group .image-group__preview, .detail .image-group .image-group__preview, .edit .image-group .image-group__preview {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border: 1px solid var(--text-color-3);
+            position: relative;
+        }
+
+            .create .image-group .image-group__preview .image__close-icon, .detail .image-group .image-group__preview .image__close-icon, .edit .image-group .image-group__preview .image__close-icon {
+                font-size: 1.8rem;
+                position: absolute;
+                top: -8px;
+                right: -2px;
+                color: var(--color-hover);
+                background-color: #fff;
+                cursor: pointer;
+                border-radius: 50%;
+            }
+
+                .create .image-group .image-group__preview .image__close-icon:hover, .detail .image-group .image-group__preview .image__close-icon:hover, .edit .image-group .image-group__preview .image__close-icon:hover {
+                    color: red;
+                }
+
+            .create .image-group .image-group__preview:first-child, .detail .image-group .image-group__preview:first-child, .edit .image-group .image-group__preview:first-child {
+                grid-column: span 2;
+                grid-row: span 3;
+            }
+
+            .create .image-group .image-group__preview img, .detail .image-group .image-group__preview img, .edit .image-group .image-group__preview img {
+                width: 100%;
+                object-fit: cover;
+            }
+
+    .create .image__upload, .detail .image__upload, .edit .image__upload {
+        width: 100%;
+        height: 100%;
+        min-width: 100px;
+        min-height: 100px;
+        margin-top: 0;
+        border: 1px dashed var(--text-color-3);
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        aspect-ratio: 1;
+    }
+
+        .create .image__upload:hover, .detail .image__upload:hover, .edit .image__upload:hover {
+            color: var(--color-hover);
+            border: 1px dashed var(--color-hover);
+        }
+
+    .create .image__upload-icon, .detail .image__upload-icon, .edit .image__upload-icon {
+        font-size: 3.4rem;
+    }
+
+    .create input[type="file"], .detail input[type="file"], .edit input[type="file"] {
+        display: none;
+    }
+
+    .detail .content {
+        margin-bottom: 0;
+    }
+
+    .detail .form-item {
+        background-color: rgba(238, 238, 245, 0.8);
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }

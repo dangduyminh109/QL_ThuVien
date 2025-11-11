@@ -2,7 +2,7 @@
 using System.Web.Optimization;
 
 namespace QL_ThuVien
-{
+{   
     public class BundleConfig
     {
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
@@ -20,11 +20,23 @@ namespace QL_ThuVien
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
-
+                      "~/Content/bootstrap/js/bootstrap.bundle.min.js"));
+            bundles.Add(new Bundle("~/bundles/tinymce").Include(
+                     "~/Content/tinymce/js/tinymce/tinymce.min.js",
+                     "~/Content/scripts/tinymce-config.js"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/css/reset.css",
+                      "~/Content/bootstrap/css/bootstrap.min.css",
+                      "~/Content/css/general.css",
+                      "~/Content/css/_variables.css",
+                      "~/Content/icons/fontawesome/css/all.min.css"));
+            // admin
+            bundles.Add(new StyleBundle("~/Content/admin/css").Include(
+                     "~/Content/css/reset.css",
+                     "~/Content/bootstrap/css/bootstrap.min.css",
+                     "~/Content/icons/fontawesome/css/all.min.css",
+                     "~/Content/admin/css/admin.css"
+                    ));
         }
     }
 }

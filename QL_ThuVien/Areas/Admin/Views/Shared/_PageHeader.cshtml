@@ -1,0 +1,21 @@
+﻿@model Tuple<string, List<Tuple<string, string>>>
+<div class="page-header">
+    <h1></h1>
+    <ul class="breadcrumb">
+    </ul>
+</div>
+
+<div class="page-header">
+    <h1 class="page-header__title">@Model.Item1</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            @foreach (var item in Model.Item2)
+            {
+                <li class="breadcrumb-item">
+                    <a href="@item.Item2">@item.Item1</a>
+                </li>
+            }
+        </ol>
+    </nav>
+</div>
+

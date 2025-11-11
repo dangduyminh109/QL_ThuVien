@@ -1,0 +1,28 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/Content/admin/css/page/dangnhap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-title">Đăng nhập</div>
+        <form method="post" action="/Admin/Auth/DangNhapPost">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="Email" placeholder="Nhập email" required />
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="password" name="MatKhau" placeholder="Nhập mật khẩu" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿/* ======================================= permissions ======================================= */
+.permissions-block {
+    background-color: #fff;
+    padding: 10px;
+    margin-top: 10px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    border-radius: 2px;
+}
+
+    .permissions-block .permissions-block__header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .permissions-block .permissions-block__header .permissions-block__title {
+            color: var(--text-color-3); 
+            font-size: 1.8rem;
+            flex: 1;
+        }
+
+        .permissions-block .permissions-block__header .btn-permissions {
+            margin-left: auto;
+        }
+
+    .permissions-block .list-permissions {
+        padding: 10px 0 0;
+    }
+
+        .permissions-block .list-permissions .list-permissions__table {
+            min-width: 450px;
+            overflow: auto;
+        }
+
+            .permissions-block .list-permissions .list-permissions__table .table-item__label,
+            .permissions-block .list-permissions .list-permissions__table .table-item__label-all {
+                height: 20px;
+                width: 20px;
+                border-radius: 2px;
+                border: 1px solid var(--text-color); 
+                position: relative;
+                cursor: pointer;
+                display: inline-flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+                .permissions-block .list-permissions .list-permissions__table .table-item__label::before,
+                .permissions-block .list-permissions .list-permissions__table .table-item__label-all::before {
+                    content: "L";
+                    position: absolute;
+                    transform: rotate(45deg) scaleX(-1);
+                    display: none;
+                }
+
+            .permissions-block .list-permissions .list-permissions__table .table-item__select,
+            .permissions-block .list-permissions .list-permissions__table .table-item__select-all {
+                display: none;
+            }
+
+                .permissions-block .list-permissions .list-permissions__table .table-item__select:checked + .table-item__label,
+                .permissions-block .list-permissions .list-permissions__table .table-item__select-all:checked + .table-item__label-all {
+                    background-color: #eeeef5;
+                }
+
+                    .permissions-block .list-permissions .list-permissions__table .table-item__select:checked + .table-item__label::before,
+                    .permissions-block .list-permissions .list-permissions__table .table-item__select-all:checked + .table-item__label-all::before {
+                        display: block;
+                        color: var(--primary);
+                    }
+
+        .permissions-block .list-permissions table th,
+        .permissions-block .list-permissions table td {
+            padding: 10px 5px;
+            text-align: center;
+        }
+
+            .permissions-block .list-permissions table td:first-child {
+                text-align: start;
+            }
+
+        .permissions-block .list-permissions .row-title {
+            background-color: var(--text-color); 
+            color: var(--text-color-3); 
+            font-size: 1.8rem;
+        }
+/* ============ box =========== */
+/* ======================================= block ======================================= */

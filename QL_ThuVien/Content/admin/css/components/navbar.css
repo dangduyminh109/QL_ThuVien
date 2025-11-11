@@ -1,0 +1,110 @@
+﻿:root {
+    --bg-color-navbar: #263544;
+    --bg-color-navbar-2: #222d3b;
+    --bg-color-navbar-hover: #1d2531;
+}
+
+.navbar {
+    width: 250px;
+    height: 100vh;
+    background-color: var(--bg-color-navbar);
+    display: block;
+    transition: transform 0.5s ease;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    z-index: 5;
+}
+
+    .navbar .navigation__title {
+        padding: 10px;
+        font-size: 1.6rem;
+        margin: 0;
+        color: var(--color-hover);
+    }
+
+    .navbar .navigation__list {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .navbar .navigation-item__btn {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        color: var(--text-color);
+        text-align: start;
+        margin: 0;
+        padding: 10px 20px;
+        font-size: 1.6rem;
+        font-weight: 200;
+    }
+
+        .navbar .navigation-item__btn:hover {
+            color: var(--color-hover);
+            background-color: var(--bg-color-navbar-hover);
+        }
+
+        .navbar .navigation-item__btn:focus {
+            box-shadow: none;
+            outline: none;
+            border: none;
+        }
+
+        .navbar .navigation-item__btn.active {
+            background-color: var(--bg-color-navbar-hover);
+        }
+
+        .navbar .navigation-item__btn.single.active {
+            background-color: var(--bg-color-navbar-2);
+            color: var(--color-hover);
+        }
+
+    .navbar .navigation-item__icon-btn {
+        margin-right: 10px;
+        font-size: 1.8rem;
+    }
+
+    .navbar .navigation-item__icon-btn-down {
+        margin-left: auto;
+        transition: 0.3s;
+        transform: rotate(-90deg);
+    }
+
+    .navbar .navigation-item__btn[aria-expanded="true"] .navigation-item__icon-btn-down {
+        transform: rotate(0);
+    }
+
+    .navbar .navigation-item__link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 30px;
+        background-color: var(--bg-color-navbar-2);
+        color: var(--text-color);
+    }
+
+        .navbar .navigation-item__link:hover {
+            color: var(--color-hover);
+            background-color: var(--bg-color-navbar-hover);
+        }
+
+        .navbar .navigation-item__link:focus {
+            box-shadow: none;
+            background-color: var(--bg-color-navbar-hover);
+            color: var(--color-hover);
+        }
+
+        .navbar .navigation-item__link.active {
+            color: var(--color-hover);
+        }
+
+    .navbar .navigation-item__icon {
+        font-size: 0.8rem;
+    }
+
+    .navbar .navigation-item__title {
+        margin: 0;
+        font-size: 1.6rem;
+    }

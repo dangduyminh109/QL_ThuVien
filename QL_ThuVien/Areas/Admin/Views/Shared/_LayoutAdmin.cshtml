@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @Styles.Render("~/Content/admin/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("Styles", required: false)
+    <link href="~/Content/admin/css/responsive.css" rel="stylesheet" />
+    <title>@ViewBag.PageTitle</title>
+</head>
+<body>
+    @Html.Partial("./partials/block_header")
+    <main class="main" id="main">
+        @Html.Partial("./partials/block_navbar")
+        @RenderBody()
+    </main>
+    <script src="~/Content/admin/scripts/admin.js?v=1.0.5"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/tinymce")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

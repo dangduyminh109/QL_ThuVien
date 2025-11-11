@@ -1,0 +1,9 @@
+@import "_variables.css";
+@import "./components/general.css";
+@import "./components/header.css";
+@import "./components/navbar.css";
+@import "page/product.css";
+@import "page/create-edit-detail.css";
+@import "page/role.css";
+@import "page/account.css";
+@import "page/profile.css";
