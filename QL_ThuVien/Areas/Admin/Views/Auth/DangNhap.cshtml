@@ -5,22 +5,31 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Đăng nhập hệ thống</title>
     <link href="~/Content/admin/css/page/dangnhap.css" rel="stylesheet" />
     <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body>
     <div class="login-container">
-        <div class="login-title">Đăng nhập</div>
+        <div class="login-title">Đăng nhập bằng tài khoản DB</div>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
         <form method="post" action="/Admin/Auth/DangNhapPost">
+            @Html.AntiForgeryToken()
+
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="Email" placeholder="Nhập email" required />
+                <label for="dbUsername" class="form-label">Tên đăng nhập (DB Username)</label>
+                <input type="text" class="form-control" id="dbUsername" name="dbUsername" placeholder="Nhập DB Username" required />
             </div>
+
             <div class="mb-3">
-                <label for="password" class="form-label">Mật khẩu</label>
-                <input type="password" class="form-control" id="password" name="MatKhau" placeholder="Nhập mật khẩu" required />
+                <label for="dbPassword" class="form-label">Mật khẩu</label>
+                <input type="password" class="form-control" id="dbPassword" name="dbPassword" placeholder="Nhập mật khẩu" required />
             </div>
+
             <button type="submit" class="btn btn-primary w-100">Đăng nhập</button>
         </form>
     </div>

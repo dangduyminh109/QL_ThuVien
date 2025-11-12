@@ -124,6 +124,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NhanVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\XacThucController.cs" />
     <Compile Include="Areas\Admin\helpers\Helpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -455,7 +456,6 @@
     <Content Include="Content\tinymce\CHANGELOG.md" />
     <Content Include="Content\tinymce\js\tinymce\langs\README.md" />
     <Content Include="Content\tinymce\js\tinymce\license.md" />
-    <Content Include="Areas\Admin\Views\Auth\DangNhap.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\partials\block_header.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\partials\block_navbar.cshtml" />
@@ -469,6 +469,12 @@
       <LastGenOutput>Database.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Areas\Admin\Views\Auth\DangNhap.cshtml" />
+    <Content Include="Areas\Admin\Views\NhanVien\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NhanVien\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\NhanVien\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\NhanVien\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_FormXacNhan.cshtml" />
     <None Include="Models\Database.dbml.layout">
       <DependentUpon>Database.dbml</DependentUpon>
     </None>

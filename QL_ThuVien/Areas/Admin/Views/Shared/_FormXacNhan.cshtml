@@ -1,0 +1,38 @@
+﻿@*id form,nội dung,tiêu đề,idBtn,textBtn*@
+@model List<string>
+
+@{
+    var idFrom = Model[0];
+    var noiDung = Model[1];
+    var tieuDe = Model[2];
+    var idBtn = Model[3];
+    var textBtn = Model[4];
+}
+
+<div class="modal fade" id="@idFrom" tabindex="-1" aria-labelledby="@($"{idFrom}Label")">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title warning-text" id="@($"{idFrom}Label")">@tieuDe</h3>
+                <button type="button" class="close-button" data-bs-dismiss="modal" aria-label="Close">
+                    <span><i class="fa-solid fa-xmark"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @Html.Raw(noiDung)
+            </div>
+            <div class="modal-footer">
+                <button type="button"
+                        class="@($"{idBtn}__close-btn btn btn-primary")"
+                        data-bs-dismiss="modal">
+                    Đóng
+                </button>
+                <button type="button"
+                        id="@idBtn"
+                        class="btn @idBtn form-warning-btn">
+                    @textBtn
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

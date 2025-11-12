@@ -1,12 +1,16 @@
 ﻿@*@using QL_ThuVien.Areas.Admin.Services*@
 @using QL_ThuVien.Models
 @{
-//var ChoPhep = Session["ChoPhep"] as string;
-//var DsQuyen = PhanQuyenService.GetDsQuyen(ChoPhep);
-//var HoTen = Session["HoTen"] as string;
-//var AnhDaiDien = Session["AnhDaiDien"] as string;
-//var maTaiKhoan = Convert.ToString(Session["TaiKhoan"]);
+    //var ChoPhep = Session["ChoPhep"] as string;
+    //var DsQuyen = PhanQuyenService.GetDsQuyen(ChoPhep);
+    //var HoTen = Session["HoTen"] as string;
+    //var AnhDaiDien = Session["AnhDaiDien"] as string;
+    //var maTaiKhoan = Convert.ToString(Session["TaiKhoan"]);
 
+}
+
+@{
+    var hoTen = Session["HoTen"] as string ?? "Người dùng";
 }
 <header class="header">
     <div class="wrapper">
@@ -59,8 +63,8 @@
                 <i class="screen__icon screen__icon--compress active fa-solid fa-compress"></i>
             </div>
             <button type="button" class="btn-admin btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="admin__img" src=@(false ? "/Content/images/ANHDAIDIEN/": "/Content/images/default-image.jpg") alt="avatar" /> 
-                <h2 class="admin__name">Nhom CSDL</h2> 
+                <img class="admin__img" src=@(false ? "/Content/images/ANHDAIDIEN/": "/Content/images/default-image.jpg") alt="avatar" />
+                <h2 class="admin__name">@hoTen</h2>
                 <span class="admin__icon">
                     <i class="fa-solid fa-caret-down"></i>
                 </span>

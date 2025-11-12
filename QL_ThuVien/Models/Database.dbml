@@ -1,4 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="QL_THUVIEN" Class="DatabaseDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Table Name="dbo.Audit_UserActions" Member="Audit_UserActions">
+    <Type Name="Audit_UserAction">
+      <Column Name="AuditId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AdminUser" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="TargetUser" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
+      <Column Name="ActionType" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ObjectName" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Details" Type="System.String" DbType="NVarChar(400)" CanBeNull="true" />
+      <Column Name="ActionTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Success" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.THELOAI" Member="THELOAIs">
+    <Type Name="THELOAI">
+      <Column Name="maTL" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tenTL" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="THELOAI_SACH" Member="SACHes" ThisKey="maTL" OtherKey="maTL" Type="SACH" />
+    </Type>
+  </Table>
   <Table Name="dbo.CALAMVIEC" Member="CALAMVIECs">
     <Type Name="CALAMVIEC">
       <Column Name="maCA" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -6,17 +25,6 @@
       <Column Name="thoiGianBD" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="thoiGianKT" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="CALAMVIEC_PHANCONG" Member="PHANCONGs" ThisKey="maCA" OtherKey="maCA" Type="PHANCONG" />
-    </Type>
-  </Table>
-  <Table Name="dbo.THONGBAO" Member="THONGBAOs">
-    <Type Name="THONGBAO">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="maDocGia" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="maPMUON" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="noiDung" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
-      <Column Name="kieuThongBao" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="ngayGui" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="daGui" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.CTPHIEUMUON" Member="CTPHIEUMUONs">
@@ -59,6 +67,7 @@
       <Column Name="chucVu" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="sdt" Type="System.String" DbType="NChar(13)" CanBeNull="true" />
       <Column Name="email" Type="System.String" DbType="NChar(50)" CanBeNull="true" />
+      <Column Name="DBUserName" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
       <Association Name="NHANVIEN_PHANCONG" Member="PHANCONGs" ThisKey="maNV" OtherKey="maNV" Type="PHANCONG" />
       <Association Name="NHANVIEN_PHIEUMUON" Member="PHIEUMUONs" ThisKey="maNV" OtherKey="maNV" Type="PHIEUMUON" />
     </Type>
@@ -105,8 +114,8 @@
       <Column Name="maTG" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="SACH_CTPHIEUMUON" Member="CTPHIEUMUONs" ThisKey="maSach" OtherKey="maSach" Type="CTPHIEUMUON" />
       <Association Name="NXB_SACH" Member="NXB" ThisKey="maNXB" OtherKey="maNXB" Type="NXB" IsForeignKey="true" />
-      <Association Name="TACGIA_SACH" Member="TACGIA" ThisKey="maTG" OtherKey="maTG" Type="TACGIA" IsForeignKey="true" />
       <Association Name="THELOAI_SACH" Member="THELOAI" ThisKey="maTL" OtherKey="maTL" Type="THELOAI" IsForeignKey="true" />
+      <Association Name="TACGIA_SACH" Member="TACGIA" ThisKey="maTG" OtherKey="maTG" Type="TACGIA" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.TACGIA" Member="TACGIAs">
@@ -116,13 +125,6 @@
       <Column Name="ngaySinh" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Column Name="gioiTinh" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="TACGIA_SACH" Member="SACHes" ThisKey="maTG" OtherKey="maTG" Type="SACH" />
-    </Type>
-  </Table>
-  <Table Name="dbo.THELOAI" Member="THELOAIs">
-    <Type Name="THELOAI">
-      <Column Name="maTL" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="tenTL" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Association Name="THELOAI_SACH" Member="SACHes" ThisKey="maTL" OtherKey="maTL" Type="SACH" />
     </Type>
   </Table>
 </Database>
