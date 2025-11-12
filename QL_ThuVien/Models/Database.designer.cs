@@ -27,16 +27,18 @@ namespace QL_ThuVien.Models
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
-        private static string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["QL_THUVIENConnectionString"].ConnectionString;
-
-        #region Extensibility Method Definitions
-        partial void OnCreated();
+		
+    #region Extensibility Method Definitions
+    partial void OnCreated();
+    partial void InsertAudit_UserAction(Audit_UserAction instance);
+    partial void UpdateAudit_UserAction(Audit_UserAction instance);
+    partial void DeleteAudit_UserAction(Audit_UserAction instance);
+    partial void InsertTHELOAI(THELOAI instance);
+    partial void UpdateTHELOAI(THELOAI instance);
+    partial void DeleteTHELOAI(THELOAI instance);
     partial void InsertCALAMVIEC(CALAMVIEC instance);
     partial void UpdateCALAMVIEC(CALAMVIEC instance);
     partial void DeleteCALAMVIEC(CALAMVIEC instance);
-    partial void InsertTHONGBAO(THONGBAO instance);
-    partial void UpdateTHONGBAO(THONGBAO instance);
-    partial void DeleteTHONGBAO(THONGBAO instance);
     partial void InsertCTPHIEUMUON(CTPHIEUMUON instance);
     partial void UpdateCTPHIEUMUON(CTPHIEUMUON instance);
     partial void DeleteCTPHIEUMUON(CTPHIEUMUON instance);
@@ -64,9 +66,6 @@ namespace QL_ThuVien.Models
     partial void InsertTACGIA(TACGIA instance);
     partial void UpdateTACGIA(TACGIA instance);
     partial void DeleteTACGIA(TACGIA instance);
-    partial void InsertTHELOAI(THELOAI instance);
-    partial void UpdateTHELOAI(THELOAI instance);
-    partial void DeleteTHELOAI(THELOAI instance);
     #endregion
 		
 		public DatabaseDataContext(string connection) : 
@@ -74,13 +73,8 @@ namespace QL_ThuVien.Models
 		{
 			OnCreated();
 		}
-        public DatabaseDataContext() :
-        base(connectionString, mappingSource)
-        {
-            OnCreated();
-        }
-
-        public DatabaseDataContext(System.Data.IDbConnection connection) : 
+		
+		public DatabaseDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -98,19 +92,27 @@ namespace QL_ThuVien.Models
 			OnCreated();
 		}
 		
+		public System.Data.Linq.Table<Audit_UserAction> Audit_UserActions
+		{
+			get
+			{
+				return this.GetTable<Audit_UserAction>();
+			}
+		}
+		
+		public System.Data.Linq.Table<THELOAI> THELOAIs
+		{
+			get
+			{
+				return this.GetTable<THELOAI>();
+			}
+		}
+		
 		public System.Data.Linq.Table<CALAMVIEC> CALAMVIECs
 		{
 			get
 			{
 				return this.GetTable<CALAMVIEC>();
-			}
-		}
-		
-		public System.Data.Linq.Table<THONGBAO> THONGBAOs
-		{
-			get
-			{
-				return this.GetTable<THONGBAO>();
 			}
 		}
 		
@@ -185,13 +187,349 @@ namespace QL_ThuVien.Models
 				return this.GetTable<TACGIA>();
 			}
 		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Audit_UserActions")]
+	public partial class Audit_UserAction : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-		public System.Data.Linq.Table<THELOAI> THELOAIs
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _AuditId;
+		
+		private string _AdminUser;
+		
+		private string _TargetUser;
+		
+		private string _ActionType;
+		
+		private string _ObjectName;
+		
+		private string _Details;
+		
+		private System.Nullable<System.DateTime> _ActionTime;
+		
+		private System.Nullable<bool> _Success;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnAuditIdChanging(int value);
+    partial void OnAuditIdChanged();
+    partial void OnAdminUserChanging(string value);
+    partial void OnAdminUserChanged();
+    partial void OnTargetUserChanging(string value);
+    partial void OnTargetUserChanged();
+    partial void OnActionTypeChanging(string value);
+    partial void OnActionTypeChanged();
+    partial void OnObjectNameChanging(string value);
+    partial void OnObjectNameChanged();
+    partial void OnDetailsChanging(string value);
+    partial void OnDetailsChanged();
+    partial void OnActionTimeChanging(System.Nullable<System.DateTime> value);
+    partial void OnActionTimeChanged();
+    partial void OnSuccessChanging(System.Nullable<bool> value);
+    partial void OnSuccessChanged();
+    #endregion
+		
+		public Audit_UserAction()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuditId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int AuditId
 		{
 			get
 			{
-				return this.GetTable<THELOAI>();
+				return this._AuditId;
 			}
+			set
+			{
+				if ((this._AuditId != value))
+				{
+					this.OnAuditIdChanging(value);
+					this.SendPropertyChanging();
+					this._AuditId = value;
+					this.SendPropertyChanged("AuditId");
+					this.OnAuditIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdminUser", DbType="NVarChar(128)")]
+		public string AdminUser
+		{
+			get
+			{
+				return this._AdminUser;
+			}
+			set
+			{
+				if ((this._AdminUser != value))
+				{
+					this.OnAdminUserChanging(value);
+					this.SendPropertyChanging();
+					this._AdminUser = value;
+					this.SendPropertyChanged("AdminUser");
+					this.OnAdminUserChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TargetUser", DbType="NVarChar(128)")]
+		public string TargetUser
+		{
+			get
+			{
+				return this._TargetUser;
+			}
+			set
+			{
+				if ((this._TargetUser != value))
+				{
+					this.OnTargetUserChanging(value);
+					this.SendPropertyChanging();
+					this._TargetUser = value;
+					this.SendPropertyChanged("TargetUser");
+					this.OnTargetUserChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActionType", DbType="NVarChar(50)")]
+		public string ActionType
+		{
+			get
+			{
+				return this._ActionType;
+			}
+			set
+			{
+				if ((this._ActionType != value))
+				{
+					this.OnActionTypeChanging(value);
+					this.SendPropertyChanging();
+					this._ActionType = value;
+					this.SendPropertyChanged("ActionType");
+					this.OnActionTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ObjectName", DbType="NVarChar(200)")]
+		public string ObjectName
+		{
+			get
+			{
+				return this._ObjectName;
+			}
+			set
+			{
+				if ((this._ObjectName != value))
+				{
+					this.OnObjectNameChanging(value);
+					this.SendPropertyChanging();
+					this._ObjectName = value;
+					this.SendPropertyChanged("ObjectName");
+					this.OnObjectNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Details", DbType="NVarChar(400)")]
+		public string Details
+		{
+			get
+			{
+				return this._Details;
+			}
+			set
+			{
+				if ((this._Details != value))
+				{
+					this.OnDetailsChanging(value);
+					this.SendPropertyChanging();
+					this._Details = value;
+					this.SendPropertyChanged("Details");
+					this.OnDetailsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActionTime", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ActionTime
+		{
+			get
+			{
+				return this._ActionTime;
+			}
+			set
+			{
+				if ((this._ActionTime != value))
+				{
+					this.OnActionTimeChanging(value);
+					this.SendPropertyChanging();
+					this._ActionTime = value;
+					this.SendPropertyChanged("ActionTime");
+					this.OnActionTimeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Success", DbType="Bit")]
+		public System.Nullable<bool> Success
+		{
+			get
+			{
+				return this._Success;
+			}
+			set
+			{
+				if ((this._Success != value))
+				{
+					this.OnSuccessChanging(value);
+					this.SendPropertyChanging();
+					this._Success = value;
+					this.SendPropertyChanged("Success");
+					this.OnSuccessChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.THELOAI")]
+	public partial class THELOAI : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _maTL;
+		
+		private string _tenTL;
+		
+		private EntitySet<SACH> _SACHes;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnmaTLChanging(int value);
+    partial void OnmaTLChanged();
+    partial void OntenTLChanging(string value);
+    partial void OntenTLChanged();
+    #endregion
+		
+		public THELOAI()
+		{
+			this._SACHes = new EntitySet<SACH>(new Action<SACH>(this.attach_SACHes), new Action<SACH>(this.detach_SACHes));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_maTL", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int maTL
+		{
+			get
+			{
+				return this._maTL;
+			}
+			set
+			{
+				if ((this._maTL != value))
+				{
+					this.OnmaTLChanging(value);
+					this.SendPropertyChanging();
+					this._maTL = value;
+					this.SendPropertyChanged("maTL");
+					this.OnmaTLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tenTL", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
+		public string tenTL
+		{
+			get
+			{
+				return this._tenTL;
+			}
+			set
+			{
+				if ((this._tenTL != value))
+				{
+					this.OntenTLChanging(value);
+					this.SendPropertyChanging();
+					this._tenTL = value;
+					this.SendPropertyChanged("tenTL");
+					this.OntenTLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="THELOAI_SACH", Storage="_SACHes", ThisKey="maTL", OtherKey="maTL")]
+		public EntitySet<SACH> SACHes
+		{
+			get
+			{
+				return this._SACHes;
+			}
+			set
+			{
+				this._SACHes.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_SACHes(SACH entity)
+		{
+			this.SendPropertyChanging();
+			entity.THELOAI = this;
+		}
+		
+		private void detach_SACHes(SACH entity)
+		{
+			this.SendPropertyChanging();
+			entity.THELOAI = null;
 		}
 	}
 	
@@ -354,212 +692,6 @@ namespace QL_ThuVien.Models
 		{
 			this.SendPropertyChanging();
 			entity.CALAMVIEC = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.THONGBAO")]
-	public partial class THONGBAO : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private System.Nullable<int> _maDocGia;
-		
-		private System.Nullable<int> _maPMUON;
-		
-		private string _noiDung;
-		
-		private string _kieuThongBao;
-		
-		private System.DateTime _ngayGui;
-		
-		private bool _daGui;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void OnmaDocGiaChanging(System.Nullable<int> value);
-    partial void OnmaDocGiaChanged();
-    partial void OnmaPMUONChanging(System.Nullable<int> value);
-    partial void OnmaPMUONChanged();
-    partial void OnnoiDungChanging(string value);
-    partial void OnnoiDungChanged();
-    partial void OnkieuThongBaoChanging(string value);
-    partial void OnkieuThongBaoChanged();
-    partial void OnngayGuiChanging(System.DateTime value);
-    partial void OnngayGuiChanged();
-    partial void OndaGuiChanging(bool value);
-    partial void OndaGuiChanged();
-    #endregion
-		
-		public THONGBAO()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_maDocGia", DbType="Int")]
-		public System.Nullable<int> maDocGia
-		{
-			get
-			{
-				return this._maDocGia;
-			}
-			set
-			{
-				if ((this._maDocGia != value))
-				{
-					this.OnmaDocGiaChanging(value);
-					this.SendPropertyChanging();
-					this._maDocGia = value;
-					this.SendPropertyChanged("maDocGia");
-					this.OnmaDocGiaChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_maPMUON", DbType="Int")]
-		public System.Nullable<int> maPMUON
-		{
-			get
-			{
-				return this._maPMUON;
-			}
-			set
-			{
-				if ((this._maPMUON != value))
-				{
-					this.OnmaPMUONChanging(value);
-					this.SendPropertyChanging();
-					this._maPMUON = value;
-					this.SendPropertyChanged("maPMUON");
-					this.OnmaPMUONChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_noiDung", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
-		public string noiDung
-		{
-			get
-			{
-				return this._noiDung;
-			}
-			set
-			{
-				if ((this._noiDung != value))
-				{
-					this.OnnoiDungChanging(value);
-					this.SendPropertyChanging();
-					this._noiDung = value;
-					this.SendPropertyChanged("noiDung");
-					this.OnnoiDungChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kieuThongBao", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string kieuThongBao
-		{
-			get
-			{
-				return this._kieuThongBao;
-			}
-			set
-			{
-				if ((this._kieuThongBao != value))
-				{
-					this.OnkieuThongBaoChanging(value);
-					this.SendPropertyChanging();
-					this._kieuThongBao = value;
-					this.SendPropertyChanged("kieuThongBao");
-					this.OnkieuThongBaoChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ngayGui", DbType="DateTime NOT NULL")]
-		public System.DateTime ngayGui
-		{
-			get
-			{
-				return this._ngayGui;
-			}
-			set
-			{
-				if ((this._ngayGui != value))
-				{
-					this.OnngayGuiChanging(value);
-					this.SendPropertyChanging();
-					this._ngayGui = value;
-					this.SendPropertyChanged("ngayGui");
-					this.OnngayGuiChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_daGui", DbType="Bit NOT NULL")]
-		public bool daGui
-		{
-			get
-			{
-				return this._daGui;
-			}
-			set
-			{
-				if ((this._daGui != value))
-				{
-					this.OndaGuiChanging(value);
-					this.SendPropertyChanging();
-					this._daGui = value;
-					this.SendPropertyChanged("daGui");
-					this.OndaGuiChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -1191,6 +1323,8 @@ namespace QL_ThuVien.Models
 		
 		private string _email;
 		
+		private string _DBUserName;
+		
 		private EntitySet<PHANCONG> _PHANCONGs;
 		
 		private EntitySet<PHIEUMUON> _PHIEUMUONs;
@@ -1213,6 +1347,8 @@ namespace QL_ThuVien.Models
     partial void OnsdtChanged();
     partial void OnemailChanging(string value);
     partial void OnemailChanged();
+    partial void OnDBUserNameChanging(string value);
+    partial void OnDBUserNameChanged();
     #endregion
 		
 		public NHANVIEN()
@@ -1358,6 +1494,26 @@ namespace QL_ThuVien.Models
 					this._email = value;
 					this.SendPropertyChanged("email");
 					this.OnemailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DBUserName", DbType="NVarChar(128)")]
+		public string DBUserName
+		{
+			get
+			{
+				return this._DBUserName;
+			}
+			set
+			{
+				if ((this._DBUserName != value))
+				{
+					this.OnDBUserNameChanging(value);
+					this.SendPropertyChanging();
+					this._DBUserName = value;
+					this.SendPropertyChanged("DBUserName");
+					this.OnDBUserNameChanged();
 				}
 			}
 		}
@@ -2081,9 +2237,9 @@ namespace QL_ThuVien.Models
 		
 		private EntityRef<NXB> _NXB;
 		
-		private EntityRef<TACGIA> _TACGIA;
-		
 		private EntityRef<THELOAI> _THELOAI;
+		
+		private EntityRef<TACGIA> _TACGIA;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2111,8 +2267,8 @@ namespace QL_ThuVien.Models
 		{
 			this._CTPHIEUMUONs = new EntitySet<CTPHIEUMUON>(new Action<CTPHIEUMUON>(this.attach_CTPHIEUMUONs), new Action<CTPHIEUMUON>(this.detach_CTPHIEUMUONs));
 			this._NXB = default(EntityRef<NXB>);
-			this._TACGIA = default(EntityRef<TACGIA>);
 			this._THELOAI = default(EntityRef<THELOAI>);
+			this._TACGIA = default(EntityRef<TACGIA>);
 			OnCreated();
 		}
 		
@@ -2335,40 +2491,6 @@ namespace QL_ThuVien.Models
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TACGIA_SACH", Storage="_TACGIA", ThisKey="maTG", OtherKey="maTG", IsForeignKey=true)]
-		public TACGIA TACGIA
-		{
-			get
-			{
-				return this._TACGIA.Entity;
-			}
-			set
-			{
-				TACGIA previousValue = this._TACGIA.Entity;
-				if (((previousValue != value) 
-							|| (this._TACGIA.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._TACGIA.Entity = null;
-						previousValue.SACHes.Remove(this);
-					}
-					this._TACGIA.Entity = value;
-					if ((value != null))
-					{
-						value.SACHes.Add(this);
-						this._maTG = value.maTG;
-					}
-					else
-					{
-						this._maTG = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("TACGIA");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="THELOAI_SACH", Storage="_THELOAI", ThisKey="maTL", OtherKey="maTL", IsForeignKey=true)]
 		public THELOAI THELOAI
 		{
@@ -2399,6 +2521,40 @@ namespace QL_ThuVien.Models
 						this._maTL = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("THELOAI");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="TACGIA_SACH", Storage="_TACGIA", ThisKey="maTG", OtherKey="maTG", IsForeignKey=true)]
+		public TACGIA TACGIA
+		{
+			get
+			{
+				return this._TACGIA.Entity;
+			}
+			set
+			{
+				TACGIA previousValue = this._TACGIA.Entity;
+				if (((previousValue != value) 
+							|| (this._TACGIA.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._TACGIA.Entity = null;
+						previousValue.SACHes.Remove(this);
+					}
+					this._TACGIA.Entity = value;
+					if ((value != null))
+					{
+						value.SACHes.Add(this);
+						this._maTG = value.maTG;
+					}
+					else
+					{
+						this._maTG = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("TACGIA");
 				}
 			}
 		}
@@ -2595,120 +2751,6 @@ namespace QL_ThuVien.Models
 		{
 			this.SendPropertyChanging();
 			entity.TACGIA = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.THELOAI")]
-	public partial class THELOAI : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _maTL;
-		
-		private string _tenTL;
-		
-		private EntitySet<SACH> _SACHes;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnmaTLChanging(int value);
-    partial void OnmaTLChanged();
-    partial void OntenTLChanging(string value);
-    partial void OntenTLChanged();
-    #endregion
-		
-		public THELOAI()
-		{
-			this._SACHes = new EntitySet<SACH>(new Action<SACH>(this.attach_SACHes), new Action<SACH>(this.detach_SACHes));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_maTL", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int maTL
-		{
-			get
-			{
-				return this._maTL;
-			}
-			set
-			{
-				if ((this._maTL != value))
-				{
-					this.OnmaTLChanging(value);
-					this.SendPropertyChanging();
-					this._maTL = value;
-					this.SendPropertyChanged("maTL");
-					this.OnmaTLChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tenTL", DbType="NVarChar(100) NOT NULL", CanBeNull=false)]
-		public string tenTL
-		{
-			get
-			{
-				return this._tenTL;
-			}
-			set
-			{
-				if ((this._tenTL != value))
-				{
-					this.OntenTLChanging(value);
-					this.SendPropertyChanging();
-					this._tenTL = value;
-					this.SendPropertyChanged("tenTL");
-					this.OntenTLChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="THELOAI_SACH", Storage="_SACHes", ThisKey="maTL", OtherKey="maTL")]
-		public EntitySet<SACH> SACHes
-		{
-			get
-			{
-				return this._SACHes;
-			}
-			set
-			{
-				this._SACHes.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_SACHes(SACH entity)
-		{
-			this.SendPropertyChanging();
-			entity.THELOAI = this;
-		}
-		
-		private void detach_SACHes(SACH entity)
-		{
-			this.SendPropertyChanging();
-			entity.THELOAI = null;
 		}
 	}
 }

@@ -1,0 +1,67 @@
+﻿@using QL_ThuVien.Models
+@model QL_ThuVien.Models.NHANVIEN
+
+@{
+    ViewBag.Title = "Chi tiết nhân viên";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Chi Tiết", new List<Tuple<string, string>> {
+    Tuple.Create("Nhân Viên", "/Admin/NhanVien"),
+    Tuple.Create("Chi tiết", $"/Admin/NhanVien/Details/{Model.maNV}")
+}))
+
+@if (Model != null)
+{
+    <div class="detail account">
+        <h1 class="title">Thông tin chung</h1>
+        <div class="general">
+            <div class="form-group">
+                <div class="fullName form-item">
+                    <p class="label"><b>Họ và tên</b></p>
+                    <p class="content">@Model.hoTenNV</p>
+                </div>
+                <div class="email form-item">
+                    <p class="label"><b>Email</b></p>
+                    <p class="content">@Model.email</p>
+                </div>
+            
+            </div>
+            <div class="form-group">
+                <div class="phone form-item">
+                    <p class="label"><b>Số điện thoại</b></p>
+                    <p class="content">@Model.sdt</p>
+                </div>
+                <div class="GT form-item">
+                    <p class="label"><b>Giới Tính</b></p>
+                    <p class="content">
+                        @(Model.gioiTinh.HasValue ? (Model.gioiTinh.Value ? "Nam" : "Nữ") : "Khác")
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="listRoles form-item">
+                    <p class="label"><b>Chức vụ</b></p>
+                    <p class="content">@Model.chucVu</p>
+                </div>
+                <div class="birtDate form-item">
+                    <p class="label"><b>Ngày sinh</b></p>
+                    <p class="content">@(Model.ngaySinh?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</p>
+                </div>
+            </div>
+
+            <div class="form-group__btn">
+                <a href="@Url.Action("Index", "NhanVien", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+                <a href="@Url.Action("Edit", "NhanVien", new { maNV = Model.maNV, area = "Admin" })" class="btn btn-primary">Sửa Nhân Viên</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="text-center text-warning mt-2">Dữ liệu nhân viên không tồn tại hoặc bạn không có quyền truy cập</h1>
+}

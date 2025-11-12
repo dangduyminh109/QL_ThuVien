@@ -1,0 +1,118 @@
+﻿@model QL_ThuVien.Models.NHANVIEN
+@{
+    ViewBag.Title = "Cập nhật nhân viên";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+    var DsQuyen = ViewBag.DsQuyen as List<string> ?? new List<string>();
+    string selectedRole = ViewBag.SelectedRole as string
+                          ?? Request.Form["roleToAdd"]
+                          ?? Model?.DBUserName ?? "";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Cập nhật nhân viên", new List<Tuple<string, string>> {
+    Tuple.Create("Nhân viên","/Admin/NhanVien"),
+    Tuple.Create("Cập nhật", "/Admin/NhanVien/Edit")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+<div class="create account">
+    @using (Html.BeginForm("Edit", "NhanVien", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.maNV)
+
+        @* Hiển thị lỗi ModelState *@
+        if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        }
+
+
+        <h1 class="title">Thông tin chung</h1>
+        <div class="general">
+            <div class="form-group">
+                <div class="form-item">
+                    <label for="hoTenNV">Họ và tên *</label>
+                    <input type="text" class="form-control" name="hoTenNV" id="hoTenNV"
+                           value="@Html.Encode(Request.Form["hoTenNV"] ?? Model?.hoTenNV ?? "")" required />
+                    @Html.ValidationMessageFor(m => m.hoTenNV, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-item">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email" id="email"
+                           value="@Html.Encode(Request.Form["email"] ?? Model?.email ?? "")" />
+                    @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-item">
+                    <label for="sdt">Số điện thoại</label>
+                    <input type="text" class="form-control" name="sdt" id="sdt"
+                           value="@Html.Encode(Request.Form["sdt"] ?? Model?.sdt ?? "")" />
+                    @Html.ValidationMessageFor(m => m.sdt, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-item">
+                    <label for="gioiTinh">Giới tính</label>
+                    <select class="form-control" name="gioiTinh" id="gioiTinh">
+                        <option value="">-- Chọn --</option>
+                        <option value="false" @(Request.Form["gioiTinh"] == "true" || (Request.Form["gioiTinh"] == null && Model?.gioiTinh == false) ? "selected" : "")>Nam</option>
+                        <option value="true" @(Request.Form["gioiTinh"] == "false" || (Request.Form["gioiTinh"] == null && Model?.gioiTinh == true) ? "selected" : "")>Nữ</option>
+                    </select>
+                    @Html.ValidationMessageFor(m => m.gioiTinh, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-item">
+                    <label for="roleToAdd">Phân quyền</label>
+                    <select class="form-control" name="roleToAdd" id="roleToAdd">
+                        <option value="" disabled @(string.IsNullOrEmpty(selectedRole) ? "selected" : "")>-- chọn role --</option>
+                        @foreach (var quyen in DsQuyen)
+                        {
+                            <option value="@quyen" @(quyen.Equals(selectedRole, StringComparison.OrdinalIgnoreCase) ? "selected" : "")>@quyen</option>
+                        }
+                    </select>
+                    @Html.ValidationMessage("roleToAdd", "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="form-item">
+                    <label for="username">Username *</label>
+                    <input type="text" class="form-control" name="username" id="username" required
+                           value="@Html.Encode(Request.Form["username"] ?? Model?.DBUserName ?? "")" />
+                    @Html.ValidationMessage("username", "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-item">
+                    <label for="password">Mật khẩu (Để trống nếu không đổi)</label>
+                    <input type="password" class="form-control" name="password" id="password" />
+                    @Html.ValidationMessage("password", "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-item">
+                    <label for="ngaySinh">Ngày sinh</label>
+                    <input type="date" class="form-control" name="ngaySinh" id="ngaySinh"
+                           value="@(Request.Form["ngaySinh"] ?? Model?.ngaySinh?.ToString("yyyy-MM-dd") ?? "")" />
+                    @Html.ValidationMessageFor(m => m.ngaySinh, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group__btn mt-3">
+            <a href="/Admin/NhanVien" class="btn btn-secondary">Quay lại</a>
+            <button type="submit" class="btn btn-primary">Cập nhật nhân viên</button>
+        </div>
+    }
+</div>
+}

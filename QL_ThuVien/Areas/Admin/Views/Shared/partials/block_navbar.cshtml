@@ -4,33 +4,33 @@
         <ul class="navigation__list">
             <li class="navigation-item">
                 <button class="navigation-item__btn btn" id="navigation-item__btn" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#navigation-item__collapse-product"
-                        aria-expanded="false" aria-controls="navigation-item__collapse-product">
+                        data-bs-toggle="collapse" data-bs-target="#navigation-item__collapse-book"
+                        aria-expanded="false" aria-controls="navigation-item__collapse-book">
                     <span class="navigation-item__icon-btn">
                         <i class="fa-brands fa-product-hunt"></i>
                     </span>
-                    Sản phẩm
+                  Quản lý sách
                     <span class="navigation-item__icon-btn-down">
                         <i class="fa-solid fa-caret-down"></i>
                     </span>
                 </button>
-                <div class="navigation-item__collapse-product collapse" id="navigation-item__collapse-product">
-                    <a class="navigation-item__link" href="/Admin/SanPham" data-menu="list-product">
+                <div class="navigation-item__collapse-book collapse" id="navigation-item__collapse-book">
+                    <a class="navigation-item__link" href="/Admin/SanPham" data-menu="list-book">
                         <span class="navigation-item__icon">
                             <i class="fa-solid fa-plus"></i>
                         </span>
-                        <h3 class="navigation-item__title">Danh sách sản phẩm</h3>
+                        <h3 class="navigation-item__title">Danh sách sách</h3>
                     </a>
-                    <a class="navigation-item__link" href="/admin/DanhMuc/Index" data-menu="product-category">
+                    <a class="navigation-item__link" href="/admin/DanhMuc/Index" data-menu="book-category">
                         <span class="navigation-item__icon">
                             <i class="fa-solid fa-plus"></i>
                         </span>
-                        <h3 class="navigation-item__title">Danh mục sản phẩm</h3>
+                        <h3 class="navigation-item__title">Thể loại</h3>
                     </a>
                 </div>
             </li>
 
-            <li class="navigation-item">
+            @*<li class="navigation-item">
                 <button class="navigation-item__btn btn" id="navigation-item__btn" type="button"
                         data-bs-toggle="collapse" data-bs-target="#navigation-item__collapse-role"
                         aria-expanded="false" aria-controls="navigation-item__collapse-role">
@@ -56,23 +56,32 @@
                         <h3 class="navigation-item__title">Chia quyền</h3>
                     </a>
                 </div>
-            </li>
+            </li>*@
 
             <li class="navigation-item">
-                <a href="/admin/DonHang" class="navigation-item__btn btn single" data-menu="list-order">
+                <a href="/admin/NhanVien" class="navigation-item__btn btn single" data-menu="list-reader">
                     <span class="navigation-item__icon-btn">
                         <i class="fas fa-shopping-cart"></i>
                     </span>
-                    Danh sách Đơn Hàng
+                    Quản lý độc giả
+                </a>
+            </li>
+            <li class="navigation-item">
+                <a href="/admin/NhanVien" class="navigation-item__btn btn single" data-menu="list-author">
+                    <span class="navigation-item__icon-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                    </span>
+                    Quản lý tác giả
                 </a>
             </li>
 
+
             <li class="navigation-item">
-                <a href="/admin/TaiKhoan" class="navigation-item__btn btn single" data-menu="list-account">
+                <a href="/Admin/NhanVien" class="navigation-item__btn btn single" data-menu="list-account">
                     <span class="navigation-item__icon-btn">
                         <i class="fa-solid fa-user"></i>
                     </span>
-                    Danh sách tài khoản
+                    Quản lý nhân viên
                 </a>
             </li>
         </ul>

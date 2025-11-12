@@ -1,0 +1,108 @@
+﻿@model QL_ThuVien.Models.NHANVIEN
+@using QL_ThuVien.Models
+@{
+    ViewBag.Title = "Tạo mới nhân viên";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    var DsQuyen = ViewBag.DsQuyen as List<string>; // danh sách role name
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Tạo mới", new List<Tuple<string, string>> {
+    Tuple.Create("Nhân viên", "/Admin/NhanVien"),
+    Tuple.Create("Tạo mới", "/Admin/NhanVien/Create")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+    <div class="create account">
+        @using (Html.BeginForm("Create", "NhanVien", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @* Hiển thị lỗi nếu có *@
+            if (!string.IsNullOrEmpty(ViewBag.Error as string))
+            {
+                <div class="alert alert-danger">@Html.Raw(ViewBag.Error)</div>
+            }
+
+            <h1 class="title">Thông tin chung</h1>
+            <div class="general">
+                <div class="form-group">
+                    <div class="fullName form-item">
+                        <label for="hoTenNV">Họ và tên (<span class="important-item">*</span>)</label>
+                        <input class="form-control" id="hoTenNV" name="hoTenNV" type="text" required
+                               value="@Html.Encode(Model?.hoTenNV ?? "")" />
+                    </div>
+                    <div class="email form-item">
+                        <label for="email">Email</label>
+                        <input class="form-control" id="email" name="email" type="email"
+                               value="@Html.Encode(Model?.email ?? "")" />
+                    </div>
+                    <div class="phone form-item">
+                        <label for="sdt">Số điện thoại</label>
+                        <input class="form-control" id="sdt" name="sdt" type="text"
+                               value="@Html.Encode(Model?.sdt ?? "")" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="GT form-item">
+                        <label for="GioiTinh">Giới Tính</label>
+                        <select id="GioiTinh" name="gioiTinh" class="form-control">
+                            <option value="">-- Chọn --</option>
+                            <option value="0" @(Model?.gioiTinh == false ? "selected" : "")>Nam</option>
+                            <option value="1" @(Model?.gioiTinh == true ? "selected" : "")>Nữ</option>
+                        </select>
+                    </div>
+                    <div class="listRoles form-item">
+                        <label for="roleToAdd">Phân quyền (<span class="important-item">*</span>)</label>
+                        <select id="roleToAdd" name="roleToAdd" class="form-control" required>
+                            <option value="" disabled @(string.IsNullOrEmpty(Model?.DBUserName) ? "selected" : "")>-- chọn role --</option>
+                            @if (DsQuyen != null && DsQuyen.Count > 0)
+                            {
+                                foreach (var quyen in DsQuyen)
+                                {
+                                    <option value="@quyen" @(Model?.DBUserName == quyen ? "selected" : "")>@quyen</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="" disabled selected>-- Chưa có role nào --</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="username form-item">
+                        <label for="username">Username (<span class="important-item">*</span>)</label>
+                        <input class="form-control" id="username" name="username" type="text" required
+                               value="@Html.Encode(Model?.DBUserName ?? "")" />
+                    </div>
+                    <div class="password form-item">
+                        <label for="password">Mật khẩu (<span class="important-item">*</span>)</label>
+                        <input class="form-control" id="password" name="password" type="text" required
+                               value="" />
+                    </div>
+                    <div class="dateOfBirth form-item">
+                        <label for="ngaySinh">Ngày Sinh</label>
+                        <input class="form-control" id="ngaySinh" name="ngaySinh" type="date"
+                               value="@(Model?.ngaySinh?.ToString("yyyy-MM-dd") ?? "")" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group__btn">
+                <a href="/Admin/NhanVien" class="btn btn-primary">Quay lại</a>
+                <button type="submit" class="btn btn-primary">Tạo nhân viên</button>
+            </div>
+        }
+    </div>
+}
