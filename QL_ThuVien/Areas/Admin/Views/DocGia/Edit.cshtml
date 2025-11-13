@@ -1,0 +1,94 @@
+﻿@using QL_ThuVien.Models
+@model QL_ThuVien.Models.DOCGIA
+
+@{
+    ViewBag.Title = "Cập nhật độc giả";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Cập nhật độc giả", new List<Tuple<string, string>> {
+    Tuple.Create("Độc giả","/Admin/DocGia"),
+    Tuple.Create("Cập nhật", "/Admin/DocGia/Edit")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+    <div class="create account">
+        @using (Html.BeginForm("Edit", "DocGia", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.maDocGia)
+
+            @* Hiển thị lỗi ModelState *@
+            if (!ViewData.ModelState.IsValid)
+            {
+                @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+            }
+
+            <h1 class="title">Thông tin chung</h1>
+            <div class="general">
+                <div class="form-group">
+                    <div class="form-item">
+                        <label for="hoTenDG">Họ và tên *</label>
+                        <input type="text" class="form-control" name="hoTenDG" id="hoTenDG"
+                               value="@Html.Encode(Request.Form["hoTenDG"] ?? Model?.hoTenDG ?? "")" required />
+                        @Html.ValidationMessageFor(m => m.hoTenDG, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-item">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email"
+                               value="@Html.Encode(Request.Form["email"] ?? Model?.email ?? "")" />
+                        @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-item">
+                        <label for="sdt">Số điện thoại</label>
+                        <input type="text" class="form-control" name="sdt" id="sdt"
+                               value="@Html.Encode(Request.Form["sdt"] ?? Model?.sdt ?? "")" />
+                        @Html.ValidationMessageFor(m => m.sdt, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-item">
+                        <label for="gioiTinh">Giới tính</label>
+                        <select class="form-control" name="gioiTinh" id="gioiTinh">
+                            <option value="">-- Chọn --</option>
+                            <option value="false" @(Request.Form["gioiTinh"] == "false" || (Request.Form["gioiTinh"] == null && Model?.gioiTinh == false) ? "selected" : "")>Nam</option>
+                            <option value="true" @(Request.Form["gioiTinh"] == "true" || (Request.Form["gioiTinh"] == null && Model?.gioiTinh == true) ? "selected" : "")>Nữ</option>
+                        </select>
+                        @Html.ValidationMessageFor(m => m.gioiTinh, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-item">
+                        <label for="diaChi">Địa chỉ</label>
+                        <input type="text" class="form-control" name="diaChi" id="diaChi"
+                               value="@Html.Encode(Request.Form["diaChi"] ?? Model?.diaChi ?? "")" />
+                        @Html.ValidationMessageFor(m => m.diaChi, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-item">
+                        <label for="ngaySinh">Ngày sinh</label>
+                        <input type="date" class="form-control" name="ngaySinh" id="ngaySinh"
+                               value="@(Request.Form["ngaySinh"] ?? Model?.ngaySinh?.ToString("yyyy-MM-dd") ?? "")" />
+                        @Html.ValidationMessageFor(m => m.ngaySinh, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group__btn mt-3">
+                <a href="/Admin/DocGia" class="btn btn-secondary">Quay lại</a>
+                <button type="submit" class="btn btn-primary">Cập nhật độc giả</button>
+            </div>
+        }
+    </div>
+}

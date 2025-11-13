@@ -1,0 +1,83 @@
+﻿@using QL_ThuVien.Models
+@model QL_ThuVien.Models.DOCGIA
+
+@{
+    ViewBag.Title = "Tạo mới độc giả";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Tạo mới", new List<Tuple<string, string>> {
+    Tuple.Create("Độc Giả", "/Admin/DocGia"),
+    Tuple.Create("Tạo mới", "/Admin/DocGia/Create")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+    <div class="create account">
+        @using (Html.BeginForm("Create", "DocGia", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            @* Hiển thị lỗi nếu có *@
+            if (!string.IsNullOrEmpty(ViewBag.Error as string))
+            {
+                <div class="alert alert-danger">@Html.Raw(ViewBag.Error)</div>
+            }
+
+            <h1 class="title">Thông tin chung</h1>
+            <div class="general">
+                <div class="form-group">
+                    <div class="fullName form-item">
+                        <label for="hoTenDG">Họ và tên (<span class="important-item">*</span>)</label>
+                        <input class="form-control" id="hoTenDG" name="hoTenDG" type="text" required
+                               value="@Html.Encode(Model?.hoTenDG ?? "")" />
+                    </div>
+                    <div class="email form-item">
+                        <label for="email">Email</label>
+                        <input class="form-control" id="email" name="email" type="email"
+                               value="@Html.Encode(Model?.email ?? "")" />
+                    </div>
+                    <div class="phone form-item">
+                        <label for="sdt">Số điện thoại</label>
+                        <input class="form-control" id="sdt" name="sdt" type="text"
+                               value="@Html.Encode(Model?.sdt ?? "")" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="GT form-item">
+                        <label for="gioiTinh">Giới Tính</label>
+                        <select id="gioiTinh" name="gioiTinh" class="form-control">
+                            <option value="">-- Chọn --</option>
+                            <option value="false" @(Model?.gioiTinh == false ? "selected" : "")>Nam</option>
+                            <option value="true" @(Model?.gioiTinh == true ? "selected" : "")>Nữ</option>
+                        </select>
+                    </div>
+                    <div class="address form-item">
+                        <label for="diaChi">Địa chỉ</label>
+                        <input class="form-control" id="diaChi" name="diaChi" type="text"
+                               value="@Html.Encode(Model?.diaChi ?? "")" />
+                    </div>
+                    <div class="dateOfBirth form-item">
+                        <label for="ngaySinh">Ngày Sinh</label>
+                        <input class="form-control" id="ngaySinh" name="ngaySinh" type="date"
+                               value="@(Model?.ngaySinh?.ToString("yyyy-MM-dd") ?? "")" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group__btn">
+                <a href="/Admin/DocGia" class="btn btn-primary">Quay lại</a>
+                <button type="submit" class="btn btn-primary">Tạo độc giả</button>
+            </div>
+        }
+    </div>
+}

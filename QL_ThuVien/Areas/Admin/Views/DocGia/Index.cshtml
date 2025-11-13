@@ -1,0 +1,118 @@
+﻿@using QL_ThuVien.Models
+@model IEnumerable<QL_ThuVien.Models.DOCGIA>
+
+@{
+    ViewBag.Title = "Danh sách độc giả";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/admin/css/page/product.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Danh sách độc giả", new List<Tuple<string, string>> {
+    Tuple.Create("Danh sách độc giả", "/Admin/DocGia")
+}))
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorPermission as string))
+{
+    <div class="alert alert-danger">
+        @Html.Encode(ViewBag.ErrorPermission)
+    </div>
+}
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <div class="alert alert-warning">
+        <h4>Bạn không có quyền truy cập trang này</h4>
+        <p>Người dùng hiện tại (@Html.Encode(ViewBag.DBUser ?? "")) không có quyền <strong>SELECT</strong> trên bảng <code>dbo.DOCGIA</code>. Vui lòng liên hệ quản trị hệ thống để cấp quyền.</p>
+    </div>
+}
+else
+{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="toolbar">
+        <div class="toolbar__right-box">
+            <a href="@Url.Action("Create", "DocGia", new { area = "Admin" })" class="btn btn-primary">
+                <span class="icon-btn"><i class="fa-solid fa-plus"></i></span> Thêm mới độc giả
+            </a>
+        </div>
+    </div>
+
+    <div class="overview-block">
+        <div class="overview-item total-products">
+            <h3 class="overview-item__title total-products__title">Tổng số độc giả</h3>
+            <p class="overview-item__detail total-products__detail">@((Model != null) ? Model.Count() : 0)</p>
+        </div>
+    </div>
+
+    <div class="list-account list-table">
+        <table class="list-account__table">
+            <thead>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Địa chỉ</th>
+                    <th>Ngày sinh</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var dg in Model)
+                    {
+                        <tr>
+                            <td>@dg.hoTenDG</td>
+                            <td>@dg.email</td>
+                            <td>@dg.sdt</td>
+                            <td>@dg.diaChi</td>
+                            <td>@(dg.ngaySinh?.ToString("dd/MM/yyyy") ?? "")</td>
+                            <td style="text-align:center">
+                                <a href="@Url.Action("Edit",  "DocGia", new { maDocGia = dg.maDocGia, area = "Admin" })" class="btn-primary btn">Sửa</a>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Details", "DocGia", new { maDocGia = dg.maDocGia, area = "Admin" })" class="btn btn-warning">Chi tiết</a>
+                            </td>
+                            <td style="text-align:center">
+                                <button type="button" class="btn-delete btn btn-danger" data-bs-toggle="modal" data-bs-target="#warningDeleteModal" data-bs-id=@dg.maDocGia path="DocGia/Delete">Xóa</button>
+                            </td>
+                        </tr>
+                    }
+                    <form method="post" id="form-product-delete">
+                        @Html.AntiForgeryToken()
+                    </form>
+                    @Html.Partial("_FormXacNhan", new List<string> {
+                        "warningDeleteModal",
+                        "Bạn có chắc chắn muốn <b class='warning-text'>Xóa độc giả</b> này không?",
+                        "Xóa độc giả",
+                        "warning-delete-modal-btn",
+                        "Xóa"
+                    })
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center">
+                            <p class="noProducts">Không có độc giả hiển thị (hoặc bạn không có quyền).</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

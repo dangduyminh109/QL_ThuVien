@@ -11,92 +11,6 @@ namespace QL_ThuVien.Areas.Admin.Controllers
     public class NhanVienController : XacThucController
     {
         public NhanVienController() { }
-
-        private bool HasPermission(string objectName, string permissionName)
-        {
-            try
-            {
-                var conn = Db.Connection as SqlConnection;
-                if (conn == null) return false;
-
-                var mustClose = (conn.State == ConnectionState.Closed);
-                if (mustClose) conn.Open();
-
-                try
-                {
-                    using (var cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT permission_name FROM fn_my_permissions(@objectName,'OBJECT')";
-                        cmd.Parameters.AddWithValue("@objectName", objectName);
-
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                if (string.Equals(reader["permission_name"].ToString(), permissionName, StringComparison.OrdinalIgnoreCase))
-                                    return true;
-                            }
-                        }
-                    }
-                }
-                finally
-                {
-                    if (mustClose && conn.State != ConnectionState.Closed) conn.Close();
-                }
-            }
-            catch
-            {
-                // Nếu có lỗi khi kiểm tra quyền -> mặc định deny
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Lấy danh sách role có thể gán bằng stored procedure dbo.sp_GetAssignableRoles
-        /// </summary>
-        private List<string> GetAssignableRoles(SqlConnection externalConn = null)
-        {
-            var roles = new List<string>();
-            try
-            {
-                var conn = externalConn ?? Db.Connection as SqlConnection;
-                if (conn == null) return roles;
-
-                var mustClose = (externalConn == null) && (conn.State == ConnectionState.Closed);
-                if (mustClose) conn.Open();
-
-                using (var cmd = new SqlCommand("dbo.sp_GetAssignableRoles", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            roles.Add(reader["RoleName"].ToString());
-                        }
-                    }
-                }
-
-                if (mustClose && conn.State != ConnectionState.Closed) conn.Close();
-            }
-            catch
-            {
-                // trả về list rỗng nếu có lỗi
-                roles = new List<string>();
-            }
-
-            return roles;
-        }
-
-        /// <summary>
-        /// Đảm bảo ViewBag.DsQuyen luôn có giá trị (được gọi trước mọi return View(...)).
-        /// </summary>
-        private void EnsureViewBagRoles(SqlConnection conn = null)
-        {
-            ViewBag.DsQuyen = GetAssignableRoles(conn);
-        }
-
         // ---------------------- Actions ----------------------
 
         // GET: Admin/NhanVien
@@ -185,7 +99,7 @@ namespace QL_ThuVien.Areas.Admin.Controllers
                     cmd.Parameters.AddWithValue("@hoTenNV", model.hoTenNV ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@gioiTinh", model.gioiTinh ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@ngaySinh", model.ngaySinh ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@chucVu", model.chucVu ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@chucVu", string.IsNullOrWhiteSpace(roleToAdd) ? (object)DBNull.Value : roleToAdd);
                     cmd.Parameters.AddWithValue("@sdt", model.sdt ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@email", model.email ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@username", username);
@@ -263,6 +177,27 @@ namespace QL_ThuVien.Areas.Admin.Controllers
                     }
                 }
 
+                // Lấy roles và set selected role
+                EnsureViewBagRoles();
+                string userRole = null;
+
+                using (var cmdRole = conn.CreateCommand())
+                {
+                    cmdRole.CommandText = "dbo.sp_GetUserRole";
+                    cmdRole.CommandType = CommandType.StoredProcedure;
+                    cmdRole.Parameters.AddWithValue("@username", nv.DBUserName);
+
+                    using (var reader = cmdRole.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            userRole = reader["RoleName"].ToString();
+                        }
+                    }
+                }
+
+                // Set role vào ViewBag
+                ViewBag.SelectedRole = userRole;
 
                 if (mustClose && conn.State != ConnectionState.Closed) conn.Close();
 
@@ -276,11 +211,6 @@ namespace QL_ThuVien.Areas.Admin.Controllers
 
                 // Kiểm tra quyền UPDATE (nếu cần hiển thị UI khác)
                 ViewBag.CanUpdate = HasPermission("dbo.NHANVIEN", "UPDATE");
-
-
-                // Lấy roles và set selected role
-                EnsureViewBagRoles();
-                ViewBag.SelectedRole = nv.DBUserName;
 
 
                 return View(nv);
@@ -331,7 +261,7 @@ namespace QL_ThuVien.Areas.Admin.Controllers
                     cmd.Parameters.AddWithValue("@hoTenNV", model.hoTenNV ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@gioiTinh", model.gioiTinh ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@ngaySinh", model.ngaySinh ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@chucVu", model.chucVu ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@chucVu", string.IsNullOrWhiteSpace(roleToAdd) ? (object)DBNull.Value : roleToAdd);
                     cmd.Parameters.AddWithValue("@sdt", model.sdt ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@email", model.email ?? (object)DBNull.Value);
 

@@ -239,6 +239,92 @@ namespace QL_ThuVien.Areas.Admin.Controllers
             base.Dispose(disposing);
         }
 
+        protected bool HasPermission(string objectName, string permissionName)
+        {
+            try
+            {
+                var conn = Db.Connection as SqlConnection;
+                if (conn == null) return false;
+
+                var mustClose = (conn.State == ConnectionState.Closed);
+                if (mustClose) conn.Open();
+
+                try
+                {
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT permission_name FROM fn_my_permissions(@objectName,'OBJECT')";
+                        cmd.Parameters.AddWithValue("@objectName", objectName);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (string.Equals(reader["permission_name"].ToString(), permissionName, StringComparison.OrdinalIgnoreCase))
+                                    return true;
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    if (mustClose && conn.State != ConnectionState.Closed) conn.Close();
+                }
+            }
+            catch
+            {
+                // Nếu có lỗi khi kiểm tra quyền -> mặc định deny
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Lấy danh sách role có thể gán bằng stored procedure dbo.sp_GetAssignableRoles
+        /// </summary>
+        protected List<string> GetAssignableRoles(SqlConnection externalConn = null)
+        {
+            var roles = new List<string>();
+            try
+            {
+                var conn = externalConn ?? Db.Connection as SqlConnection;
+                if (conn == null) return roles;
+
+                var mustClose = (externalConn == null) && (conn.State == ConnectionState.Closed);
+                if (mustClose) conn.Open();
+
+                using (var cmd = new SqlCommand("dbo.sp_GetAssignableRoles", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            roles.Add(reader["RoleName"].ToString());
+                        }
+                    }
+                }
+
+                if (mustClose && conn.State != ConnectionState.Closed) conn.Close();
+            }
+            catch
+            {
+                // trả về list rỗng nếu có lỗi
+                roles = new List<string>();
+            }
+
+            return roles;
+        }
+
+        /// <summary>
+        /// Đảm bảo ViewBag.DsQuyen luôn có giá trị (được gọi trước mọi return View(...)).
+        /// </summary>
+        protected void EnsureViewBagRoles(SqlConnection conn = null)
+        {
+            ViewBag.DsQuyen = GetAssignableRoles(conn);
+        }
+
+
         #endregion
     }
 }
