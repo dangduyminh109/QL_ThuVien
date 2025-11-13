@@ -112,6 +112,8 @@
       <Column Name="maNXB" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="maTL" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="maTG" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="anhBia" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="mota" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Association Name="SACH_CTPHIEUMUON" Member="CTPHIEUMUONs" ThisKey="maSach" OtherKey="maSach" Type="CTPHIEUMUON" />
       <Association Name="NXB_SACH" Member="NXB" ThisKey="maNXB" OtherKey="maNXB" Type="NXB" IsForeignKey="true" />
       <Association Name="THELOAI_SACH" Member="THELOAI" ThisKey="maTL" OtherKey="maTL" Type="THELOAI" IsForeignKey="true" />

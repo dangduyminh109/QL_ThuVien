@@ -39,21 +39,21 @@ else
                     <div class="form-item">
                         <label for="hoTenDG">Họ và tên *</label>
                         <input type="text" class="form-control" name="hoTenDG" id="hoTenDG"
-                               value="@Html.Encode(Request.Form["hoTenDG"] ?? Model?.hoTenDG ?? "")" required />
+                               value="@Html.Raw(Request.Form["hoTenDG"] ?? Model?.hoTenDG ?? "")" required />
                         @Html.ValidationMessageFor(m => m.hoTenDG, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-item">
                         <label for="email">Email</label>
                         <input type="email" class="form-control" name="email" id="email"
-                               value="@Html.Encode(Request.Form["email"] ?? Model?.email ?? "")" />
+                               value="@Html.Raw(Request.Form["email"] ?? Model?.email ?? "")" />
                         @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
                     </div>
 
                     <div class="form-item">
                         <label for="sdt">Số điện thoại</label>
                         <input type="text" class="form-control" name="sdt" id="sdt"
-                               value="@Html.Encode(Request.Form["sdt"] ?? Model?.sdt ?? "")" />
+                               value="@Html.Raw(Request.Form["sdt"] ?? Model?.sdt ?? "")" />
                         @Html.ValidationMessageFor(m => m.sdt, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -72,7 +72,7 @@ else
                     <div class="form-item">
                         <label for="diaChi">Địa chỉ</label>
                         <input type="text" class="form-control" name="diaChi" id="diaChi"
-                               value="@Html.Encode(Request.Form["diaChi"] ?? Model?.diaChi ?? "")" />
+                               value="@Html.Raw(Request.Form["diaChi"] ?? Model?.diaChi ?? "")" />
                         @Html.ValidationMessageFor(m => m.diaChi, "", new { @class = "text-danger" })
                     </div>
 

@@ -1,0 +1,56 @@
+﻿@model QL_ThuVien.Models.NXB
+
+@{
+    ViewBag.Title = "Tạo mới Nhà Xuất Bản";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Tạo mới", new List<Tuple<string, string>> {
+    Tuple.Create("NXB","/Admin/NXB"),
+    Tuple.Create("Tạo mới", "/Admin/NXB/Create")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+    <div class="create account">
+        @using (Html.BeginForm("Create", "NXB", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            if (!string.IsNullOrEmpty(ViewBag.Error as string))
+            {
+                <div class="alert alert-danger">@Html.Raw(ViewBag.Error)</div>
+            }
+
+            <h1 class="title">Thông tin NXB</h1>
+            <div class="general">
+                <div class="form-group">
+                    <div class="form-item">
+                        <label for="tenNXB">Tên NXB *</label>
+                        <input type="text" class="form-control" name="tenNXB" id="tenNXB" required
+                               value="@Html.Encode(Model?.tenNXB ?? "")" />
+                        @Html.ValidationMessageFor(m => m.tenNXB, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-item">
+                        <label for="diaChi">Địa chỉ</label>
+                        <input type="text" class="form-control" name="diaChi" id="diaChi"
+                               value="@Html.Encode(Model?.diaChi ?? "")" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group__btn">
+                <a href="/Admin/NXB" class="btn btn-primary">Quay lại</a>
+                <button type="submit" class="btn btn-primary">Tạo NXB</button>
+            </div>
+        }
+    </div>
+}

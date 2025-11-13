@@ -124,11 +124,15 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\NXBController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SachController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TheLoaiController.cs" />
     <Compile Include="Areas\Admin\Controllers\TacGiaController.cs" />
     <Compile Include="Areas\Admin\Controllers\DocGiaController.cs" />
     <Compile Include="Areas\Admin\Controllers\NhanVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\XacThucController.cs" />
     <Compile Include="Areas\Admin\helpers\Helpers.cs" />
+    <Compile Include="Areas\Admin\Models\SachSearchResult.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -485,6 +489,18 @@
     <Content Include="Areas\Admin\Views\TacGia\Details.cshtml" />
     <Content Include="Areas\Admin\Views\TacGia\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\TacGia\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\TheLoai\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\TheLoai\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\TheLoai\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\TheLoai\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NXB\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\NXB\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\NXB\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\NXB\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Sach\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Sach\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Sach\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Sach\Index.cshtml" />
     <None Include="Models\Database.dbml.layout">
       <DependentUpon>Database.dbml</DependentUpon>
     </None>
@@ -518,6 +534,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\services\" />
+    <Folder Include="Content\images\sach\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

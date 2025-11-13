@@ -1,0 +1,140 @@
+﻿@using System.Linq
+@using QL_ThuVien.Admin.Models
+@model IEnumerable<SachSearchResult>
+
+@{
+    ViewBag.Title = "Danh sách sách";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/admin/css/page/product.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Danh sách sách", new List<Tuple<string, string>> {
+    Tuple.Create("Danh sách sách", "/Admin/Sach")
+}))
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorPermission as string))
+{
+    <div class="alert alert-danger">@Html.Encode(ViewBag.ErrorPermission)</div>
+}
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <div class="alert alert-warning"><h4>Bạn không có quyền truy cập trang này</h4></div>
+}
+else
+{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="toolbar">
+        <div class="toolbar__box">
+            <div class="toolbar__left-box">
+                @using (Html.BeginForm("Index", "Sach", FormMethod.Get, new { area = "Admin", @class = "d-flex" }))
+                {
+                    <div class="search">
+                        <input class="search__input"
+                               type="text"
+                               name="searchName"
+                               placeholder="Nhập từ khóa tìm kiếm"
+                               spellcheck="false"
+                               value="@(ViewBag.searchName ?? "")" />
+                        <button type="submit" class="search__toolbar-icon">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                }
+            </div>
+            <div class="toolbar__right-box">
+                <a href="@Url.Action("Create", "Sach", new { area = "Admin" })" class="btn btn-primary">
+                    <span class="icon-btn"><i class="fa-solid fa-plus"></i></span> Thêm sách mới
+                </a>
+                @using (Html.BeginForm("SyncQuantities", "Sach", FormMethod.Post, new { area = "Admin", @class = "d-inline-block ms-2" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-secondary" title="Đồng bộ lại số lượng sách">
+                        <i class="fa-solid fa-sync"></i> Đồng bộ số lượng
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="overview-block">
+        <div class="overview-item total-products">
+            <h3 class="overview-item__title total-products__title">Tổng số sách</h3>
+            <p class="overview-item__detail">@((Model != null) ? Model.Count() : 0)</p>
+        </div>
+    </div>
+
+    <div class="list-account list-table">
+        <table class="list-account__table">
+            <thead>
+                <tr>
+                    <th>Sách</th>
+                    <th>Tác giả</th>
+                    <th>Nhà xuất bản</th>
+                    <th>Năm XB</th>
+                    <th>Số lượng còn lại</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        string imageSrc = "/Content/images/default-image.jpg";
+                        if (!string.IsNullOrWhiteSpace(item?.anhBia))
+                        {
+                            // Nếu anhBia đã là đường dẫn bắt đầu bằng '/', giữ nguyên,
+                            // nếu chỉ là filename thì thêm đường dẫn folder mặc định.
+                            imageSrc = item.anhBia.StartsWith("/") ? item.anhBia : "/Content/images/sach/" + item.anhBia;
+                        }
+                        <tr>
+                            <td>
+                                <div class="table-item__name">
+                                    <img class="table-item__img" src="@Url.Content(imageSrc)" alt="@item.tenSach" />
+                                    <h4 class="table-item__title">@item.tenSach</h4>
+                                </div>
+                            </td>
+                            <td><p class="account-item__discount">@Html.Raw(item.hoTenTG)</p></td>
+                            <td><p class="account-item__inventory">@Html.Raw(item.tenNXB)</p></td>
+                            <td><p class="account-item__inventory">@((item.namXuatBan.HasValue) ? item.namXuatBan.ToString() : "-")</p></td>
+                            <td><p class="account-item__inventory">@((item.SlConLai.HasValue) ? item.SlConLai.ToString() : "0")</p></td>
+
+                            <td class="text-center">
+                                <a href="@Url.Action("Details", "Sach", new { maSach = item.maSach, area = "Admin" })" class="btn btn-warning">Chi tiết</a>
+                                <a href="@Url.Action("Edit", "Sach", new { maSach = item.maSach, area = "Admin" })" class="btn btn-primary">Sửa</a>
+                                <button type="button" class="btn-delete btn btn-danger" data-bs-toggle="modal" data-bs-target="#warningDeleteModal" data-bs-id="@item.maSach" path="Sach/Delete">Xóa</button>
+                            </td>
+                        </tr>
+                    }
+
+                    <form method="post" id="form-product-delete">@Html.AntiForgeryToken()</form>
+
+                    @Html.Partial("_FormXacNhan", new List<string> {
+                        "warningDeleteModal",
+                        "Bạn có chắc chắn muốn <b class='warning-text'>Xóa sách</b> này không?",
+                        "Xóa sách",
+                        "warning-delete-modal-btn",
+                        "Xóa"
+                    })
+                }
+                else
+                {
+                    <tr><td colspan="6" class="text-center"><p class="noProducts">Không có sách hiển thị.</p></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

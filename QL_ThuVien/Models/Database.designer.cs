@@ -2233,6 +2233,10 @@ namespace QL_ThuVien.Models
 		
 		private System.Nullable<int> _maTG;
 		
+		private string _anhBia;
+		
+		private string _mota;
+		
 		private EntitySet<CTPHIEUMUON> _CTPHIEUMUONs;
 		
 		private EntityRef<NXB> _NXB;
@@ -2261,6 +2265,10 @@ namespace QL_ThuVien.Models
     partial void OnmaTLChanged();
     partial void OnmaTGChanging(System.Nullable<int> value);
     partial void OnmaTGChanged();
+    partial void OnanhBiaChanging(string value);
+    partial void OnanhBiaChanged();
+    partial void OnmotaChanging(string value);
+    partial void OnmotaChanged();
     #endregion
 		
 		public SACH()
@@ -2440,6 +2448,46 @@ namespace QL_ThuVien.Models
 					this._maTG = value;
 					this.SendPropertyChanged("maTG");
 					this.OnmaTGChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_anhBia", DbType="NVarChar(200)")]
+		public string anhBia
+		{
+			get
+			{
+				return this._anhBia;
+			}
+			set
+			{
+				if ((this._anhBia != value))
+				{
+					this.OnanhBiaChanging(value);
+					this.SendPropertyChanging();
+					this._anhBia = value;
+					this.SendPropertyChanged("anhBia");
+					this.OnanhBiaChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_mota", DbType="NVarChar(MAX)")]
+		public string mota
+		{
+			get
+			{
+				return this._mota;
+			}
+			set
+			{
+				if ((this._mota != value))
+				{
+					this.OnmotaChanging(value);
+					this.SendPropertyChanging();
+					this._mota = value;
+					this.SendPropertyChanged("mota");
+					this.OnmotaChanged();
 				}
 			}
 		}

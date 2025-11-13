@@ -1,0 +1,43 @@
+﻿@model QL_ThuVien.Models.NXB
+
+@{
+    ViewBag.Title = "Chi tiết Nhà Xuất Bản";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Chi tiết", new List<Tuple<string, string>> {
+    Tuple.Create("NXB","/Admin/NXB"),
+    Tuple.Create("Chi tiết", $"/Admin/NXB/Details/{Model.maNXB}")
+}))
+
+@if (Model != null)
+{
+    <div class="detail account">
+        <h1 class="title">Thông tin chung</h1>
+        <div class="general">
+            <div class="form-group">
+                <div class="form-item">
+                    <p class="label"><b>Tên NXB</b></p>
+                    <p class="content">@Model.tenNXB</p>
+                </div>
+                <div class="form-item">
+                    <p class="label"><b>Địa chỉ</b></p>
+                    <p class="content">@Model.diaChi</p>
+                </div>
+            </div>
+
+            <div class="form-group__btn">
+                <a href="@Url.Action("Index", "NXB", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+                <a href="@Url.Action("Edit", "NXB", new { maNXB = Model.maNXB, area = "Admin" })" class="btn btn-primary">Sửa NXB</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="text-center text-warning mt-2">Dữ liệu NXB không tồn tại hoặc bạn không có quyền truy cập</h1>
+}

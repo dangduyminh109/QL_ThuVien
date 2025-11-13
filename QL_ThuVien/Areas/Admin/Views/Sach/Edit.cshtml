@@ -1,0 +1,132 @@
+﻿@model QL_ThuVien.Models.SACH
+
+@{
+    ViewBag.Title = "Chỉnh sửa sách";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Chỉnh sửa", new List<Tuple<string, string>> {
+    Tuple.Create("Sách", "/Admin/Sach"),
+    Tuple.Create("Chỉnh sửa", "/Admin/Sach/Edit")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+    <div class="create account">
+        @using (Html.BeginForm("Edit", "Sach", FormMethod.Post, new { enctype = "multipart/form-data", area = "Admin", @id = "form-edit-sach" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.maSach)
+
+            if (!string.IsNullOrEmpty(ViewBag.Error as string))
+            {
+                <div class="alert alert-danger">@Html.Raw(ViewBag.Error)</div>
+            }
+
+            if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+            if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+            }
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <h1 class="title">Thông tin chung</h1>
+            <div class="general">
+                <div class="form-group">
+                    <div class="name form-item">
+                        <label for="tenSach">Tên sách *</label>
+                        <input class="form-control" id="tenSach" name="tenSach" type="text" required value="@Html.Raw(Model?.tenSach ?? "")" />
+                        @Html.ValidationMessage("tenSach", "", new { @class = "text-danger" })
+                    </div>
+                    <div class="name form-item">
+                        <label for="maTG">Tác giả *</label>
+                        @Html.DropDownListFor(m => m.maTG, (SelectList)ViewBag.TacGiaList, "-- Chọn tác giả --", new { @class = "form-control", id = "maTG", required = "required" })
+                        @Html.ValidationMessageFor(m => m.maTG, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="name form-item">
+                        <label for="maNXB">Nhà xuất bản *</label>
+                        @Html.DropDownListFor(m => m.maNXB, (SelectList)ViewBag.NXBList, "-- Chọn NXB --", new { @class = "form-control", id = "maNXB", required = "required" })
+                        @Html.ValidationMessageFor(m => m.maNXB, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="name form-item">
+                        <label for="maTL">Thể loại *</label>
+                        @Html.DropDownListFor(m => m.maTL, (SelectList)ViewBag.TheLoaiList, "-- Chọn thể loại --", new { @class = "form-control", id = "maTL", required = "required" })
+                        @Html.ValidationMessageFor(m => m.maTL, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="name form-item">
+                        <label for="namXuatBan">Năm xuất bản</label>
+                        <input class="form-control" id="namXuatBan" name="namXuatBan" type="number" min="0" max="@DateTime.Now.Year" value="@(Model?.namXuatBan?.ToString() ?? "")" />
+                        @Html.ValidationMessage("namXuatBan", "", new { @class = "text-danger" })
+                    </div>
+                    <div class="name form-item">
+                        <label for="SlSach">Số lượng</label>
+                        <input class="form-control" id="SlSach" name="SlSach" type="number" min="0" value="@(Model?.slSach?.ToString() ?? "1")" required />
+                        @Html.ValidationMessage("SlSach", "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="moTa">Mô tả</label>
+                    <textarea class="form-control" id="moTa" name="mota" rows="6">@Html.Raw(Model?.mota ?? "")</textarea>
+                    @Html.ValidationMessage("mota", "", new { @class = "text-danger" })
+                </div>
+
+                <h1 class="title">Ảnh bìa</h1>
+                <div class="single-image-wrapper" id="image-wrapper">
+                    <label class="single-image__upload" for="AnhBia">
+                        <span class="single-image__upload-icon"><i class="fa-solid fa-upload"></i></span>
+                        upload
+                        <input id="AnhBia" name="AnhBia" type="file" accept="image/*" />
+                    </label>
+
+                    <div class="single-image__preview mt-2">
+                        @{
+                            var imgSrc = Model?.anhBia ?? "/Content/images/default-image.jpg";
+                        }
+                        <img id="preview-AnhBia" src="@imgSrc" alt="Ảnh bìa" style="max-width:160px; max-height:220px; border:1px solid #ddd; padding:4px;" />
+                    </div>
+                </div>
+
+                <div class="form-group__btn" style="margin-top:18px;">
+                    <a href="@Url.Action("Index", "Sach", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <script>
+        (function () {
+            var input = document.getElementById('AnhBia');
+            var preview = document.getElementById('preview-AnhBia');
+
+            if (input) {
+                input.addEventListener('change', function (e) {
+                    var file = this.files && this.files[0];
+                    if (!file) {
+                        preview.src = '@(Model?.anhBia ?? "/Content/images/default-image.jpg")';
+                        return;
+                    }
+                    var reader = new FileReader();
+                    reader.onload = function (evt) {
+                        preview.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+        })();
+    </script>
+}

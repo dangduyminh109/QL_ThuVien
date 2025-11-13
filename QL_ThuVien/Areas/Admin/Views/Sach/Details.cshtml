@@ -1,0 +1,98 @@
+﻿@model QL_ThuVien.Models.SACH
+
+@{
+    ViewBag.Title = "Chi tiết sách";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+    // Chuẩn hoá đường dẫn ảnh (Model.AnhBia có thể đã là đường dẫn đầy đủ hoặc chỉ tên file)
+    string imageSrc = "/Content/images/default-image.jpg";
+    if (Model != null && !string.IsNullOrWhiteSpace(Model.anhBia))
+    {
+        imageSrc = Model.anhBia.StartsWith("/") ? Model.anhBia : "/Content/images/sach/" + Model.anhBia;
+    }
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Chi Tiết", new List<Tuple<string, string>> {
+    Tuple.Create("Sách", "/Admin/Sach"),
+    Tuple.Create("Chi tiết", $"/Admin/Sach/Details/{Model?.maSach}")
+}))
+
+@if (Model != null)
+{
+    <div class="detail account">
+        <h1 class="title">Thông tin chung</h1>
+
+        <div class="general">
+            <div class="form-group">
+                <div class="fullName form-item">
+                    <p class="label"><b>Tên sách</b></p>
+                    <p class="content">@Model.tenSach</p>
+                </div>
+
+                <div class="form-item">
+                    <p class="label"><b>Tác giả</b></p>
+                    <p class="content">@Model.TACGIA.hoTenTG</p>
+                </div>
+
+                <div class="form-item">
+                    <p class="label"><b>Nhà xuất bản</b></p>
+                    <p class="content">@Model.NXB.tenNXB</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-item">
+                    <p class="label"><b>Năm xuất bản</b></p>
+                    <p class="content">@(Model.namXuatBan.HasValue ? Model.namXuatBan.ToString() : "-")</p>
+                </div>
+
+                <div class="form-item">
+                    <p class="label"><b>Tổng số</b></p>
+                    <p class="content">@(Model.slSach.HasValue ? Model.slSach.ToString() : "-")</p>
+                </div>
+
+                <div class="form-item">
+                    <p class="label"><b>Số lượng còn lại</b></p>
+                    <p class="content">@(Model.SlConLai.HasValue ? Model.SlConLai.ToString() : "0")</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-item">
+                    <p class="label"><b>Thể loại</b></p>
+                    <p class="content">
+                        @(
+                            (Model.THELOAI != null)
+                                ? Model.THELOAI.tenTL
+                                : (Model.maTL.HasValue ? Model.maTL.ToString() : "-")
+                        )
+                    </p>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.mota))
+            {
+
+                <div class="form-item">
+                    <p class="label"><b>Mô tả</b></p>
+                    <p class="content">  @Html.Raw(Model.mota)</p>
+                </div>
+            }
+            <h1 class="title">Ảnh bìa</h1>
+            <div class="single-image-wrapper" id="single-image-wrapper">
+                <div class="single-image__preview">
+                    <img src="@Url.Content(imageSrc)" alt="@Model.tenSach" />
+                </div>
+            </div>
+            <div class="form-group__btn">
+                <a href="@Url.Action("Index", "Sach", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+                <a href="@Url.Action("Edit", "Sach", new { maSach = Model.maSach, area = "Admin" })" class="btn btn-primary">Sửa sách</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="text-center text-warning mt-2">Dữ liệu sách không tồn tại hoặc bạn không có quyền truy cập</h1>
+}
