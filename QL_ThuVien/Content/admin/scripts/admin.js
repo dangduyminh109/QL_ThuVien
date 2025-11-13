@@ -463,6 +463,7 @@ function handleWarningFormProduct() {
             btnDelete.forEach((btn) => {
                 btn.onclick = () => {
                     const idProduct = btn.getAttribute("data-bs-id");
+                    console.log
                     const path = btn.getAttribute("path");
                     formProductDelete.action = `${PATH_ADMIN}/${path}/${idProduct}`;
                 };
