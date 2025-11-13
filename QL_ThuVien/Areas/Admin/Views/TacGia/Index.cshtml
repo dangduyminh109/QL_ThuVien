@@ -1,0 +1,103 @@
+﻿@using QL_ThuVien.Models
+@model IEnumerable<QL_ThuVien.Models.TACGIA>
+
+@{
+    ViewBag.Title = "Danh sách tác giả";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/admin/css/page/product.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Danh sách tác giả", new List<Tuple<string, string>> {
+    Tuple.Create("Danh sách tác giả", "/Admin/TacGia")
+}))
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorPermission as string))
+{
+    <div class="alert alert-danger">@Html.Encode(ViewBag.ErrorPermission)</div>
+}
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <div class="alert alert-warning">
+        <h4>Bạn không có quyền truy cập trang này</h4>
+    </div>
+}
+else
+{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="toolbar">
+        <div class="toolbar__right-box">
+            <a href="@Url.Action("Create", "TacGia", new { area = "Admin" })" class="btn btn-primary">
+                <span class="icon-btn"><i class="fa-solid fa-plus"></i></span> Thêm mới tác giả
+            </a>
+        </div>
+    </div>
+
+    <div class="overview-block">
+        <div class="overview-item total-products">
+            <h3 class="overview-item__title total-products__title">Tổng số tác giả</h3>
+            <p class="overview-item__detail">@((Model != null) ? Model.Count() : 0)</p>
+        </div>
+    </div>
+
+    <div class="list-account list-table">
+        <table class="list-account__table">
+            <thead>
+                <tr>
+                    <th>Họ tên</th>
+                    <th>Ngày sinh</th>
+                    <th>Giới tính</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var tg in Model)
+                    {
+                        <tr>
+                            <td>@tg.hoTenTG</td>
+                            <td>@(tg.ngaySinh?.ToString("dd/MM/yyyy") ?? "Chưa cập nhật")</td>
+                            <td>@(tg.gioiTinh.HasValue ? (tg.gioiTinh.Value ? "Nữ" : "Nam") : "Khác")</td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Details", "TacGia", new { maTG = tg.maTG, area = "Admin" })" class="btn btn-warning">Chi tiết</a>
+                                <a href="@Url.Action("Edit", "TacGia", new { maTG = tg.maTG, area = "Admin" })" class="btn btn-primary">Sửa</a>
+                                <button type="button" class="btn-delete btn btn-danger" data-bs-toggle="modal" data-bs-target="#warningDeleteModal" data-bs-id="@tg.maTG" path="TacGia/Delete">Xóa</button>
+                            </td>
+                        </tr>
+                    }
+                    <form method="post" id="form-product-delete">
+                        @Html.AntiForgeryToken()
+                    </form>
+                    @Html.Partial("_FormXacNhan", new List<string> {
+                        "warningDeleteModal",
+                        "Bạn có chắc chắn muốn <b class='warning-text'>Xóa tác giả</b> này không?",
+                        "Xóa tác giả",
+                        "warning-delete-modal-btn",
+                        "Xóa"
+                    })
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            <p class="noProducts">Không có tác giả hiển thị.</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -124,6 +124,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TacGiaController.cs" />
     <Compile Include="Areas\Admin\Controllers\DocGiaController.cs" />
     <Compile Include="Areas\Admin\Controllers\NhanVienController.cs" />
     <Compile Include="Areas\Admin\Controllers\XacThucController.cs" />
@@ -480,6 +481,10 @@
     <Content Include="Areas\Admin\Views\DocGia\Create.cshtml" />
     <Content Include="Areas\Admin\Views\DocGia\Details.cshtml" />
     <Content Include="Areas\Admin\Views\DocGia\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\TacGia\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\TacGia\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\TacGia\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\TacGia\Index.cshtml" />
     <None Include="Models\Database.dbml.layout">
       <DependentUpon>Database.dbml</DependentUpon>
     </None>
