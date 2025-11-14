@@ -1,35 +1,36 @@
 ﻿<nav class="navbar" id="navbar">
     <div class="navigation">
-        <h2 class="navigation__title">Navigation</h2>
+        <h2 class="navigation__title">Điều hướng</h2>
         <ul class="navigation__list">
+
             <li class="navigation-item">
-                <button class="navigation-item__btn btn" id="navigation-item__btn" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#navigation-item__collapse-book"
-                        aria-expanded="false" aria-controls="navigation-item__collapse-book">
+                <button class="navigation-item__btn btn" id="btn-book" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapse-book"
+                        aria-expanded="false" aria-controls="collapse-book">
                     <span class="navigation-item__icon-btn">
-                        <i class="fa-brands fa-product-hunt"></i>
+                        <i class="fa-solid fa-book"></i>
                     </span>
-                  Quản lý sách
+                    Quản lý sách
                     <span class="navigation-item__icon-btn-down">
                         <i class="fa-solid fa-caret-down"></i>
                     </span>
                 </button>
-                <div class="navigation-item__collapse-book collapse" id="navigation-item__collapse-book">
+                <div class="collapse navigation-item__collapse" id="collapse-book">
                     <a class="navigation-item__link" href="/Admin/Sach" data-menu="list-book">
                         <span class="navigation-item__icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-list"></i>
                         </span>
                         <h3 class="navigation-item__title">Danh sách sách</h3>
                     </a>
                     <a class="navigation-item__link" href="/Admin/TheLoai/Index" data-menu="book-category">
                         <span class="navigation-item__icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-tags"></i>
                         </span>
                         <h3 class="navigation-item__title">Thể loại</h3>
                     </a>
-                    <a class="navigation-item__link" href="/Admin/NXB/Index" data-menu="book-brand">
+                    <a class="navigation-item__link" href="/Admin/NXB/Index" data-menu="book-publisher">
                         <span class="navigation-item__icon">
-                            <i class="fa-solid fa-plus"></i>
+                            <i class="fa-solid fa-building"></i>
                         </span>
                         <h3 class="navigation-item__title">Nhà xuất bản</h3>
                     </a>
@@ -39,29 +40,64 @@
             <li class="navigation-item">
                 <a href="/Admin/DocGia" class="navigation-item__btn btn single" data-menu="list-reader">
                     <span class="navigation-item__icon-btn">
-                        <i class="fas fa-shopping-cart"></i>
+                        <i class="fa-solid fa-user"></i>
                     </span>
                     Quản lý độc giả
                 </a>
             </li>
+
             <li class="navigation-item">
                 <a href="/Admin/TacGia" class="navigation-item__btn btn single" data-menu="list-author">
                     <span class="navigation-item__icon-btn">
-                        <i class="fas fa-shopping-cart"></i>
+                        <i class="fa-solid fa-user-pen"></i>
                     </span>
                     Quản lý tác giả
                 </a>
             </li>
 
-
             <li class="navigation-item">
-                <a href="/Admin/NhanVien" class="navigation-item__btn btn single" data-menu="list-account">
+                <button class="navigation-item__btn btn" id="btn-employee" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapse-employee"
+                        aria-expanded="false" aria-controls="collapse-employee">
                     <span class="navigation-item__icon-btn">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-users"></i>
                     </span>
                     Quản lý nhân viên
+                    <span class="navigation-item__icon-btn-down">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </button>
+                <div class="collapse navigation-item__collapse" id="collapse-employee">
+                    <a class="navigation-item__link" href="/Admin/NhanVien" data-menu="list-employee">
+                        <span class="navigation-item__icon">
+                            <i class="fa-solid fa-list"></i>
+                        </span>
+                        <h3 class="navigation-item__title">Danh sách nhân viên</h3>
+                    </a>
+                    <a class="navigation-item__link" href="/Admin/CaLamViec" data-menu="employee-shift">
+                        <span class="navigation-item__icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </span>
+                        <h3 class="navigation-item__title">Ca làm việc</h3>
+                    </a>
+                    <a class="navigation-item__link" href="/Admin/PhanCong" data-menu="employee-assignment">
+                        <span class="navigation-item__icon">
+                            <i class="fa-solid fa-tasks"></i>
+                        </span>
+                        <h3 class="navigation-item__title">Phân công</h3>
+                    </a>
+                </div>
+            </li>
+
+            <li class="navigation-item">
+                <a href="/Admin/PhieuMuon" class="navigation-item__btn btn single" data-menu="list-borrow-slip">
+                    <span class="navigation-item__icon-btn">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </span>
+                    Quản lý phiếu mượn
                 </a>
             </li>
+
         </ul>
     </div>
 </nav>

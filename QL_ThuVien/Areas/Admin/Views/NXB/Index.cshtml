@@ -16,12 +16,12 @@
 
 @if (!string.IsNullOrEmpty(ViewBag.RoleLoadError as string))
 {
-    <div class="alert alert-warning">@Html.Encode(ViewBag.RoleLoadError)</div>
+    <div class="alert alert-warning">@Html.Raw(ViewBag.RoleLoadError)</div>
 }
 
 @if (!string.IsNullOrEmpty(ViewBag.ErrorPermission as string))
 {
-    <div class="alert alert-danger">@Html.Encode(ViewBag.ErrorPermission)</div>
+    <div class="alert alert-danger">@Html.Raw(ViewBag.ErrorPermission)</div>
 }
 
 @if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)

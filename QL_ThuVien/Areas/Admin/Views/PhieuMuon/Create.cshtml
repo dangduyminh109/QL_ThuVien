@@ -1,0 +1,183 @@
+﻿@model dynamic
+@using QL_ThuVien.Models
+@{
+    ViewBag.Title = "Tạo phiếu mượn";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Tạo mới", new List<Tuple<string, string>> {
+    Tuple.Create("Phiếu mượn", "/Admin/PhieuMuon"),
+    Tuple.Create("Tạo mới", "/Admin/PhieuMuon/Create")
+}))
+
+@{
+    // chuẩn bị danh sách Sách & options (1 lần, server-side)
+    var sachList = ViewBag.Sach as List<QL_ThuVien.Models.SACH> ?? new List<QL_ThuVien.Models.SACH>();
+    var sbOptions = new System.Text.StringBuilder();
+    foreach (var s in sachList)
+    {
+        var txt = System.Web.HttpUtility.HtmlEncode(s.tenSach);
+        sbOptions.AppendFormat("<option value=\"{0}\">{1}</option>", s.maSach, txt);
+    }
+    var sachOptionsAll = sbOptions.ToString();
+}
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+<div class="create account">
+    @using (Html.BeginForm("Create", "PhieuMuon", FormMethod.Post, new { area = "Admin" }))
+    {
+        @Html.AntiForgeryToken()
+
+        if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        }
+
+        <h1 class="title">Thông tin phiếu mượn</h1>
+
+        <div class="general">
+            <div class="form-group">
+                <div class="form-item">
+                    <label for="maDocGia">Độc giả (<span class="important-item">*</span>)</label>
+                    <select id="maDocGia" name="maDocGia" class="form-control" required>
+                        <option value="">-- Chọn độc giả --</option>
+                        @if (ViewBag.DocGia != null)
+                        {
+                            foreach (var dg in (List<DOCGIA>)ViewBag.DocGia)
+                            {
+                                var sel = (Model != null && Model.maDocGia != null && (int)Model.maDocGia == dg.maDocGia) ? "selected" : "";
+                                <option value="@dg.maDocGia" @Html.Raw(sel)>@dg.hoTenDG (@dg.sdt)</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="form-item">
+                    <label for="maNV">Nhân viên lập phiếu (<span class="important-item">*</span>)</label>
+                    <select id="maNV" name="maNV" class="form-control" required>
+                        <option value="">-- Chọn nhân viên --</option>
+                        @if (ViewBag.NhanVien != null)
+                        {
+                            foreach (var nv in (List<NHANVIEN>)ViewBag.NhanVien)
+                            {
+                                var sel = (Model != null && Model.maNV != null && (int)Model.maNV == nv.maNV) ? "selected" : "";
+                                <option value="@nv.maNV" @Html.Raw(sel)>@nv.hoTenNV</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <h2 class="title mt-6">Danh sách sách mượn</h2>
+
+            <div id="sachContainer">
+                @* Nếu controller trả về model (validation fail), render các dòng cũ có selected server-side *@
+                @if (Model != null && Model.SachMuonList != null)
+                {
+                    for (int idx = 0; idx < Model.SachMuonList.Count; idx++)
+                    {
+                        var it = Model.SachMuonList[idx];
+                        <div class="form-group sach-item align-items-end">
+                            <div class="form-item">
+                                <label>Sách</label>
+                                <select name="SachMuonList[@idx].maSach" class="form-control" required>
+                                    <option value="">-- Chọn sách --</option>
+                                    @foreach (var s in sachList)
+                                    {
+                                        var sel = (it.maSach != null && (int)it.maSach == s.maSach) ? "selected" : "";
+                                        <option value="@s.maSach" @Html.Raw(sel)>@s.tenSach</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-item">
+                                <label>Số lượng</label>
+                                <input type="number" name="SachMuonList[@idx].soLuong" min="1" class="form-control" value="@(it.soLuong ?? 1)" required />
+                            </div>
+                            <button type="button" class="btn btn-danger btn-remove-sach mt-4 h-25">Xóa</button>
+                        </div>
+                    }
+                }
+                else
+                {
+                    // 1 dòng mặc định
+                    <div class="form-group sach-item align-items-end">
+                        <div class="form-item">
+                            <label>Sách</label>
+                            <select name="SachMuonList[0].maSach" class="form-control" required>
+                                <option value="">-- Chọn sách --</option>
+                                @Html.Raw(sachOptionsAll)
+                            </select>
+                        </div>
+                        <div class="form-item">
+                            <label>Số lượng</label>
+                            <input type="number" name="SachMuonList[0].soLuong" min="1" class="form-control" value="1" required />
+                        </div>
+                        <button type="button" class="btn btn-danger btn-remove-sach mt-4 h-25">Xóa</button>
+                    </div>
+                }
+            </div>
+
+            <button type="button" id="btnAddSach" class="btn btn-secondary mt-3">+ Thêm sách</button>
+        </div>
+
+        <div class="form-group__btn">
+            <a href="@Url.Action("Index", "PhieuMuon", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+            <button type="submit" class="btn btn-primary">Tạo phiếu mượn</button>
+        </div>
+    }
+</div>
+
+    <script>
+        (function () {
+            // sachOptionsAll (HTML) từ server
+            var sachOptionsAll = `@Html.Raw(sachOptionsAll)`;
+
+            // hàm để tái đánh chỉ số name cho các input (đảm bảo chỉ số liên tục)
+            function reindexRows() {
+                var rows = document.querySelectorAll('#sachContainer .sach-item');
+                rows.forEach(function (r, i) {
+                    var sel = r.querySelector('select');
+                    var inp = r.querySelector('input[type="number"]');
+                    if (sel) sel.name = 'SachMuonList[' + i + '].maSach';
+                    if (inp) inp.name = 'SachMuonList[' + i + '].soLuong';
+                });
+            }
+
+            // thêm dòng mới
+            document.getElementById('btnAddSach').addEventListener('click', function () {
+                var container = document.getElementById('sachContainer');
+                var div = document.createElement('div');
+                div.className = 'form-group sach-item align-items-end';
+                div.innerHTML = '<div class="form-item"><label>Sách</label><select class="form-control" required>' +
+                    '<option value="">-- Chọn sách --</option>' + sachOptionsAll + '</select></div>' +
+                    '<div class="form-item"><label>Số lượng</label><input type="number" min="1" value="1" class="form-control" required /></div>' +
+                    '<button type="button" class="btn btn-danger btn-remove-sach mt-4 h-25">Xóa</button>';
+                container.appendChild(div);
+                reindexRows();
+            });
+
+            // delegate click để xử lý remove
+            document.addEventListener('click', function (e) {
+                if (e.target && e.target.classList.contains('btn-remove-sach')) {
+                    var node = e.target.closest('.sach-item');
+                    if (node) {
+                        node.remove();
+                        reindexRows();
+                    }
+                }
+            });
+
+            // khi load, ensure reindex (trường hợp Model đã render nhiều hàng)
+            reindexRows();
+        })();
+    </script>
+}

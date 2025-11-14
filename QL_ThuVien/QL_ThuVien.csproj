@@ -123,8 +123,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AuthController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhanCongController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CaLamViecController.cs" />
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\NXBController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhieuMuonController.cs" />
     <Compile Include="Areas\Admin\Controllers\SachController.cs" />
     <Compile Include="Areas\Admin\Controllers\TheLoaiController.cs" />
     <Compile Include="Areas\Admin\Controllers\TacGiaController.cs" />
@@ -501,6 +504,18 @@
     <Content Include="Areas\Admin\Views\Sach\Details.cshtml" />
     <Content Include="Areas\Admin\Views\Sach\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Sach\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\CaLamViec\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\CaLamViec\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\CaLamViec\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\CaLamViec\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\PhanCong\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\PhanCong\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\PhanCong\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\PhanCong\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\PhieuMuon\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\PhieuMuon\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\PhieuMuon\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\PhieuMuon\Edit.cshtml" />
     <None Include="Models\Database.dbml.layout">
       <DependentUpon>Database.dbml</DependentUpon>
     </None>

@@ -17,7 +17,7 @@
 
 @if (!string.IsNullOrEmpty(ViewBag.ErrorPermission as string))
 {
-    <div class="alert alert-danger">@Html.Encode(ViewBag.ErrorPermission)</div>
+    <div class="alert alert-danger">@Html.Raw(ViewBag.ErrorPermission)</div>
 }
 
 @if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)

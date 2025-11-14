@@ -1,0 +1,59 @@
+﻿@using QL_ThuVien.Models
+@model QL_ThuVien.Models.CALAMVIEC
+
+@{
+    ViewBag.Title = "Chi tiết ca làm việc";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Chi Tiết", new List<Tuple<string, string>> {
+    Tuple.Create("Ca làm việc", "/Admin/Calamviec"),
+    Tuple.Create("Chi tiết", $"/Admin/Calamviec/Details/{Model.maCA}")
+}))
+
+@if (Model != null)
+{
+    <div class="detail account">
+        <h1 class="title">Thông tin ca làm việc</h1>
+        <div class="general">
+            <div class="form-group">
+                <div class="fullName form-item">
+                    <p class="label"><b>Mã ca</b></p>
+                    <p class="content">@Model.maCA</p>
+                </div>
+                <div class="buoi form-item">
+                    <p class="label"><b>Buổi</b></p>
+                    <p class="content">@(Model.buoi ?? "Chưa cập nhật")</p>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <div class="startTime form-item">
+                    <p class="label"><b>Thời gian bắt đầu</b></p>
+                    <p class="content">
+                        @(Model.thoiGianBD.HasValue ? Model.thoiGianBD.Value.ToString(@"hh\:mm") : "Chưa cập nhật")
+                    </p>
+                </div>
+                <div class="endTime form-item">
+                    <p class="label"><b>Thời gian kết thúc</b></p>
+                    <p class="content">
+                        @(Model.thoiGianKT.HasValue ? Model.thoiGianKT.Value.ToString(@"hh\:mm") : "Chưa cập nhật")
+                    </p>
+                </div>
+            </div>
+
+            <div class="form-group__btn">
+                <a href="@Url.Action("Index", "Calamviec", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+                <a href="@Url.Action("Edit", "Calamviec", new { maCA = Model.maCA, area = "Admin" })" class="btn btn-primary">Sửa ca làm việc</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="text-center text-warning mt-2">Dữ liệu ca làm việc không tồn tại hoặc bạn không có quyền truy cập</h1>
+}

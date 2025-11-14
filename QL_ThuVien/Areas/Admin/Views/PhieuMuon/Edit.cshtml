@@ -1,0 +1,177 @@
+﻿@model QL_ThuVien.Areas.Admin.Controllers.PhieuMuonController.TaoPhieuMuonRequest
+@using QL_ThuVien.Models
+@{
+    ViewBag.Title = "Cập nhật Phiếu mượn";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Cập nhật", new List<Tuple<string, string>> {
+    Tuple.Create("Phiếu mượn", "/Admin/PhieuMuon"),
+    Tuple.Create("Cập nhật", $"/Admin/PhieuMuon/Edit/{ViewBag.maPMUON}")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+    var sachList = ViewBag.Sach as List<QL_ThuVien.Models.SACH> ?? new List<QL_ThuVien.Models.SACH>();
+    var sb = new System.Text.StringBuilder();
+    sb.Append("<option value=\"\">-- Chọn sách --</option>");
+    foreach (var s in sachList)
+    {
+        sb.AppendFormat("<option value=\"{0}\">{1}</option>", s.maSach, System.Web.HttpUtility.HtmlEncode(s.tenSach));
+    }
+    var sachOptionsAll = sb.ToString();
+    <div class="create account">
+        @using (Html.BeginForm("Edit", "PhieuMuon", FormMethod.Post, new { area = "Admin" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("maPMUON", (int)ViewBag.maPMUON)
+
+            if (!ViewData.ModelState.IsValid)
+            {
+                @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+            }
+
+            <h1 class="title">Thông tin phiếu mượn</h1>
+            <div class="general">
+                <div class="form-group">
+                    <div class="form-item">
+                        <label for="maDocGia">Độc giả (<span class="important-item">*</span>)</label>
+                        <select id="maDocGia" name="maDocGia" class="form-control" required>
+                            <option value="">-- Chọn độc giả --</option>
+                            @if (ViewBag.DocGia != null)
+                            {
+                                foreach (var dg in (List<DOCGIA>)ViewBag.DocGia)
+                                {
+                                    var sel = (Model != null && Model.maDocGia == dg.maDocGia) ? "selected" : "";
+                                    <option value="@dg.maDocGia" @Html.Raw(sel)>@dg.hoTenDG (@dg.sdt)</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-item">
+                        <label for="maNV">Nhân viên lập phiếu (<span class="important-item">*</span>)</label>
+                        <select id="maNV" name="maNV" class="form-control" required>
+                            <option value="">-- Chọn nhân viên --</option>
+                            @if (ViewBag.NhanVien != null)
+                            {
+                                foreach (var nv in (List<NHANVIEN>)ViewBag.NhanVien)
+                                {
+                                    var sel = (Model != null && Model.maNV == nv.maNV) ? "selected" : "";
+                                    <option value="@nv.maNV" @Html.Raw(sel)>@nv.hoTenNV</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-item mt-3">
+                    <label>
+                        <input type="checkbox" id="daTra" name="daTra" value="true" @(Model != null && Model.daTra ? "checked" : "") />
+                        Đã trả (trả hết phiếu)
+                    </label>
+                </div>
+                    <h2 class="title mt-4">Danh sách sách mượn</h2>
+                    <div id="sachContainer">
+                        @if (Model != null && Model.SachMuonList != null && Model.SachMuonList.Any())
+                        {
+                            for (int i = 0; i < Model.SachMuonList.Count; i++)
+                            {
+                                var it = Model.SachMuonList[i];
+                                <div class="form-group sach-item align-items-end">
+                                    <div class="form-item">
+                                        <label>Sách</label>
+                                        <select name="SachMuonList[@i].maSach" class="form-control" required>
+                                            <option value="">-- Chọn sách --</option>
+                                            @foreach (var s in sachList)
+                                            {
+                                                var sel = (it.maSach == s.maSach) ? "selected" : "";
+                                                <option value="@s.maSach" @Html.Raw(sel)>@s.tenSach</option>
+                                            }
+                                        </select>
+                                    </div>
+
+                                    <div class="form-item">
+                                        <label>Số lượng</label>
+                                        <input type="number" name="SachMuonList[@i].soLuong" min="1" class="form-control" value="@(it.soLuong)" required />
+                                    </div>
+
+                                    <button type="button" class="btn btn-danger btn-remove-sach mt-4 h-25">Xóa</button>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="form-group sach-item">
+                                <div class="form-item">
+                                    <label>Sách</label>
+                                    <select name="SachMuonList[0].maSach" class="form-control" required>
+                                        @Html.Raw(sachOptionsAll)
+                                    </select>
+                                </div>
+                                <div class="form-item">
+                                    <label>Số lượng</label>
+                                    <input type="number" name="SachMuonList[0].soLuong" min="1" class="form-control" value="1" required />
+                                </div>
+                                <button type="button" class="btn btn-danger btn-remove-sach mt-4">Xóa</button>
+                            </div>
+                        }
+                    </div>
+
+                    <button type="button" id="btnAddSach" class="btn btn-secondary mt-3">+ Thêm sách</button>
+                </div>
+
+                <div class="form-group__btn mt-3">
+                    <a href="@Url.Action("Index", "PhieuMuon", new { area = "Admin" })" class="btn btn-secondary">Quay lại</a>
+                    <button type="submit" class="btn btn-primary">Cập nhật phiếu mượn</button>
+                </div>
+                }
+            </div>
+
+    <script>
+        (function () {
+            var sachOptionsAll = `@Html.Raw(sachOptionsAll)`;
+
+            function reindexRows() {
+                var rows = document.querySelectorAll('#sachContainer .sach-item');
+                rows.forEach(function (r, i) {
+                    var sel = r.querySelector('select');
+                    var inp = r.querySelector('input[type="number"]');
+                    if (sel) sel.name = 'SachMuonList[' + i + '].maSach';
+                    if (inp) inp.name = 'SachMuonList[' + i + '].soLuong';
+                });
+            }
+
+            document.getElementById('btnAddSach').addEventListener('click', function () {
+                var container = document.getElementById('sachContainer');
+                var div = document.createElement('div');
+                div.className = 'form-group sach-item';
+                div.innerHTML = '<div class="form-item"><label>Sách</label><select class="form-control" required>' +
+                    sachOptionsAll + '</select></div>' +
+                    '<div class="form-item"><label>Số lượng</label><input type="number" min="1" value="1" class="form-control" required /></div>' +
+                    '<button type="button" class="btn btn-danger btn-remove-sach mt-4">Xóa</button>';
+                container.appendChild(div);
+                reindexRows();
+            });
+
+            document.addEventListener('click', function (e) {
+                if (e.target && e.target.classList.contains('btn-remove-sach')) {
+                    var node = e.target.closest('.sach-item');
+                    if (node) {
+                        node.remove();
+                        reindexRows();
+                    }
+                }
+            });
+
+            reindexRows();
+        })();
+    </script>
+}

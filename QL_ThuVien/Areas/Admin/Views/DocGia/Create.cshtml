@@ -38,17 +38,17 @@ else
                     <div class="fullName form-item">
                         <label for="hoTenDG">Họ và tên (<span class="important-item">*</span>)</label>
                         <input class="form-control" id="hoTenDG" name="hoTenDG" type="text" required
-                               value="@Html.Encode(Model?.hoTenDG ?? "")" />
+                               value="@Html.Raw(Model?.hoTenDG ?? "")" />
                     </div>
                     <div class="email form-item">
                         <label for="email">Email</label>
                         <input class="form-control" id="email" name="email" type="email"
-                               value="@Html.Encode(Model?.email ?? "")" />
+                               value="@Html.Raw(Model?.email ?? "")" />
                     </div>
                     <div class="phone form-item">
                         <label for="sdt">Số điện thoại</label>
                         <input class="form-control" id="sdt" name="sdt" type="text"
-                               value="@Html.Encode(Model?.sdt ?? "")" />
+                               value="@Html.Raw(Model?.sdt ?? "")" />
                     </div>
                 </div>
 
@@ -64,7 +64,7 @@ else
                     <div class="address form-item">
                         <label for="diaChi">Địa chỉ</label>
                         <input class="form-control" id="diaChi" name="diaChi" type="text"
-                               value="@Html.Encode(Model?.diaChi ?? "")" />
+                               value="@Html.Raw(Model?.diaChi ?? "")" />
                     </div>
                     <div class="dateOfBirth form-item">
                         <label for="ngaySinh">Ngày Sinh</label>

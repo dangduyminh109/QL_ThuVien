@@ -1,0 +1,93 @@
+﻿@model QL_ThuVien.Models.PHANCONG
+@{
+    ViewBag.Title = "Sửa phân công ca làm";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Sửa", new List<Tuple<string, string>> {
+    Tuple.Create("Phân công", "/Admin/PhanCong"),
+    Tuple.Create("Sửa", $"/Admin/PhanCong/Edit/{Model.maNV}-{Model.maCA}-{Model.ngayPhanCong.ToString("yyyyMMdd")}")
+}))
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <h1 class="text-center text-warning mt-2">Bạn Không Có Quyền Truy Cập Trang Này</h1>
+}
+else
+{
+<div class="edit account">
+    @using (Html.BeginForm("Edit", "PhanCong", FormMethod.Post, new { area = "Admin" }))
+    {
+        @Html.AntiForgeryToken()
+
+        if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        }
+
+        @* Hidden fields khóa chính nếu cần *@
+        @Html.Hidden("originalMaCA", Model.maCA)
+        @Html.Hidden("originalMaNV", Model.maNV)
+        @Html.Hidden("originalNgayPhanCong", Model.ngayPhanCong.ToString("yyyy-MM-dd"))
+
+        <h1 class="title">Thông tin phân công</h1>
+        <div class="general">
+            <div class="form-group">
+
+                <!-- Dropdown disabled để hiển thị -->
+                <select id="maNV" name="maNV_disabled" class="form-control" disabled>
+                    <option value="">-- Chọn nhân viên --</option>
+                    @if (ViewBag.NhanViens != null)
+                    {
+                        foreach (var nv in ViewBag.NhanViens as List<QL_ThuVien.Models.NHANVIEN>)
+                        {
+                            <option value="@nv.maNV" @(nv.maNV == Model.maNV ? "selected" : "")>
+                                @nv.hoTenNV
+                            </option>
+                        }
+                    }
+                </select>
+
+                <!-- Hidden input để submit giá trị maNV thật -->
+                <input type="hidden" name="maNV" value="@Model.maNV" />
+
+                <small class="text-muted">Không thể thay đổi nhân viên</small>
+            </div>
+                <div class="form-group">
+                    <!-- Ca làm -->
+                    <div class="form-item">
+                        <label for="maCa">Ca làm việc (<span class="important-item">*</span>)</label>
+                        <select id="maCa" name="maCa" class="form-control" required>
+                            <option value="">-- Chọn ca làm --</option>
+                            @if (ViewBag.CaLamViecs != null)
+                            {
+                                foreach (var ca in ViewBag.CaLamViecs as List<QL_ThuVien.Models.CALAMVIEC>)
+                                {
+                                    <option value="@ca.maCA" @(ca.maCA == Model.maCA ? "selected" : "")>
+                                        Ca @ca.buoi - @ca.thoiGianBD - @ca.thoiGianKT
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <!-- Ngày phân công -->
+                    <div class="form-item">
+                        <label for="ngayPhanCong">Ngày phân công (<span class="important-item">*</span>)</label>
+                        <input class="form-control" id="ngayPhanCong" name="ngayPhanCong" type="date" required
+                               value="@(Model.ngayPhanCong.ToString("yyyy-MM-dd"))" />
+                    </div>
+                </div>
+            </div>
+
+        <div class="form-group__btn">
+            <a href="@Url.Action("Index", "PhanCong", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+            <button type="submit" class="btn btn-primary">Cập nhật phân công</button>
+        </div>
+    }
+</div>
+}

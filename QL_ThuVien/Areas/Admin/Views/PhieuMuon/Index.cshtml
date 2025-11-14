@@ -1,0 +1,128 @@
+﻿@using QL_ThuVien.Models
+@model IEnumerable<QL_ThuVien.Models.PHIEUMUON>
+
+@{
+    ViewBag.Title = "Danh sách phiếu mượn";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles {
+    <link href="~/Content/admin/css/page/product.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Danh sách phiếu mượn", new List<Tuple<string, string>> {
+    Tuple.Create("Danh sách phiếu mượn", "/Admin/PhieuMuon")
+}))
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorPermission as string))
+{
+    <div class="alert alert-danger">@Html.Raw(ViewBag.ErrorPermission)</div>
+}
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <div class="alert alert-warning">
+        <h4>Bạn không có quyền truy cập trang này</h4>
+    </div>
+}
+else
+{
+    if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    }
+
+    <div class="toolbar">
+        <div class="toolbar__box">
+            <div class="toolbar__right-box">
+                <a href="@Url.Action("Create", "PhieuMuon", new { area = "Admin" })" class="btn btn-primary">
+                    <span class="icon-btn"><i class="fa-solid fa-plus"></i></span> Tạo phiếu mượn mới
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="overview-block">
+        <div class="overview-item total-products">
+            <h3 class="overview-item__title total-products__title">Tổng số phiếu mượn</h3>
+            <p class="overview-item__detail">@((Model != null) ? Model.Count() : 0)</p>
+        </div>
+    </div>
+
+    <div class="list-account list-table">
+        <table class="list-account__table">
+            <thead>
+                <tr>
+                    <th>Độc giả</th>
+                    <th>Nhân viên</th>
+                    <th>Ngày mượn</th>
+                    <th>Ngày trả</th>
+                    <th>Trạng thái trả</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(item.DOCGIA?.hoTenDG ?? "N/A")</td>
+                            <td>@(item.NHANVIEN?.hoTenNV ?? "N/A")</td>
+                            <td>@(item.ngayMuon.HasValue ? item.ngayMuon.Value.ToString("dd/MM/yyyy") : "-")</td>
+                            <td>@(item.ngayTra.HasValue ? item.ngayTra.Value.ToString("dd/MM/yyyy") : "-")</td>
+                            <td>
+                                @if (item.daTra.HasValue)
+                                {
+                                    @(item.daTra.Value ? "Đã trả" : "Chưa trả")
+                                }
+                                else
+                                {
+                                    @("Chưa trả")
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Details", "PhieuMuon", new { maPMUON = item.maPMUON, area = "Admin" })" class="btn btn-warning">Chi tiết</a>
+                                <a href="@Url.Action("Edit", "PhieuMuon", new { maPMUON = item.maPMUON, area = "Admin" })" class="btn btn-primary">Sửa</a>
+
+                                @* nút Xóa dùng modal xác nhận (form sẽ được fill và submit bởi JS) *@
+                                <button type="button"
+                                        class="btn-delete btn btn-danger"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#warningDeleteModal"
+                                        data-bs-id="@item.maPMUON"
+                                        path="PhieuMuon/Delete">
+                                    Xóa
+                                </button>
+                            </td>
+                        </tr>
+                    }
+
+                    <form method="post" id="form-product-delete">
+                        @Html.AntiForgeryToken()
+                    </form>
+                    @Html.Partial("_FormXacNhan", new List<string> {
+                        "warningDeleteModal",
+                        "Bạn có chắc chắn muốn <b class='warning-text'>Xóa phiếu mượn</b> này không?",
+                        "Xóa phiếu mượn",
+                        "warning-delete-modal-btn",
+                        "Xóa"
+                    })
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <p class="noProducts">Không có phiếu mượn hiển thị.</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

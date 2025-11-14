@@ -1,0 +1,87 @@
+﻿@using QL_ThuVien.Models
+@model QL_ThuVien.Areas.Admin.Controllers.PhieuMuonController.PhieuMuonDetailsViewModel
+
+@{
+    ViewBag.Title = "Chi tiết phiếu mượn";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Chi Tiết", new List<Tuple<string, string>> {
+    Tuple.Create("Phiếu mượn", "/Admin/PhieuMuon"),
+    Tuple.Create("Chi tiết", $"/Admin/PhieuMuon/Details/{Model.PhieuMuon.maPMUON}")
+}))
+
+@if (Model != null && Model.PhieuMuon != null)
+{
+    <div class="detail account">
+        <h1 class="title">Thông tin phiếu mượn</h1>
+        <div class="general">
+            <div class="form-group">
+                <div class="form-item">
+                    <p class="label"><b>Mã phiếu mượn</b></p>
+                    <p class="content">@Model.PhieuMuon.maPMUON</p>
+                </div>
+                <div class="form-item">
+                    <p class="label"><b>Độc giả</b></p>
+                    <p class="content">@(Model.PhieuMuon.DOCGIA?.hoTenDG ?? "Chưa cập nhật")</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-item">
+                    <p class="label"><b>Nhân viên lập phiếu</b></p>
+                    <p class="content">@(Model.PhieuMuon.NHANVIEN?.hoTenNV ?? "Chưa cập nhật")</p>
+                </div>
+                <div class="form-item">
+                    <p class="label"><b>Ngày mượn</b></p>
+                    <p class="content">@(Model.PhieuMuon.ngayMuon?.ToString("dd/MM/yyyy"))</p>
+                </div>
+            </div>
+            <div class="form-item">
+                <p class="label"><b>Trạng thái trả</b></p>
+                <p class="content">
+                    @(Model.PhieuMuon.daTra == true ? "Đã trả" : "Chưa trả")
+                </p>
+            </div>
+            <h2 class="title mt-4">Danh sách sách mượn</h2>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Tên sách</th>
+                        <th>Số lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.SachMuonDetails != null && Model.SachMuonDetails.Any())
+                    {
+                        foreach (var item in Model.SachMuonDetails)
+                        {
+                            <tr>
+                                <td>@item.tenSach</td>
+                                <td>@item.soLuong</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">Chưa có sách mượn nào.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="form-group__btn mt-3">
+                <a href="@Url.Action("Index", "PhieuMuon", new { area = "Admin" })" class="btn btn-primary">Quay lại</a>
+                <a href="@Url.Action("Edit", "PhieuMuon", new { maPMUON = Model.PhieuMuon.maPMUON, area = "Admin" })" class="btn btn-primary">Sửa phiếu mượn</a>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h1 class="text-center text-warning mt-2">Dữ liệu phiếu mượn không tồn tại hoặc bạn không có quyền truy cập</h1>
+}

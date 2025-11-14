@@ -17,7 +17,7 @@
 @if (!string.IsNullOrEmpty(ViewBag.ErrorPermission as string))
 {
     <div class="alert alert-danger">
-        @Html.Encode(ViewBag.ErrorPermission)
+        @Html.Raw(ViewBag.ErrorPermission)
     </div>
 }
 
@@ -25,7 +25,7 @@
 {
     <div class="alert alert-warning">
         <h4>Bạn không có quyền truy cập trang này</h4>
-        <p>Người dùng hiện tại (@Html.Encode(ViewBag.DBUser ?? "")) không có quyền <strong>SELECT</strong> trên bảng <code>dbo.DOCGIA</code>. Vui lòng liên hệ quản trị hệ thống để cấp quyền.</p>
+        <p>Người dùng hiện tại (@Html.Raw(ViewBag.DBUser ?? "")) không có quyền <strong>SELECT</strong> trên bảng <code>dbo.DOCGIA</code>. Vui lòng liên hệ quản trị hệ thống để cấp quyền.</p>
     </div>
 }
 else

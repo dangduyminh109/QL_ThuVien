@@ -35,7 +35,7 @@ else
                     <div class="fullName form-item">
                         <label for="hoTenTG">Họ và tên (<span class="important-item">*</span>)</label>
                         <input class="form-control" id="hoTenTG" name="hoTenTG" type="text" required
-                               value="@Html.Encode(Model?.hoTenTG ?? "")" />
+                               value="@Html.Raw(Model?.hoTenTG ?? "")" />
                     </div>
                     <div class="form-item">
                         <label for="ngaySinh">Ngày sinh</label>

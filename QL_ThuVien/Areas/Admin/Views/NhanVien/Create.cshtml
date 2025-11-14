@@ -38,17 +38,17 @@ else
                     <div class="fullName form-item">
                         <label for="hoTenNV">Họ và tên (<span class="important-item">*</span>)</label>
                         <input class="form-control" id="hoTenNV" name="hoTenNV" type="text" required
-                               value="@Html.Encode(Model?.hoTenNV ?? "")" />
+                               value="@Html.Raw(Model?.hoTenNV ?? "")" />
                     </div>
                     <div class="email form-item">
                         <label for="email">Email</label>
                         <input class="form-control" id="email" name="email" type="email"
-                               value="@Html.Encode(Model?.email ?? "")" />
+                               value="@Html.Raw(Model?.email ?? "")" />
                     </div>
                     <div class="phone form-item">
                         <label for="sdt">Số điện thoại</label>
                         <input class="form-control" id="sdt" name="sdt" type="text"
-                               value="@Html.Encode(Model?.sdt ?? "")" />
+                               value="@Html.Raw(Model?.sdt ?? "")" />
                     </div>
                 </div>
 
@@ -84,7 +84,7 @@ else
                     <div class="username form-item">
                         <label for="username">Username (<span class="important-item">*</span>)</label>
                         <input class="form-control" id="username" name="username" type="text" required
-                               value="@Html.Encode(Model?.DBUserName ?? "")" />
+                               value="@Html.Raw(Model?.DBUserName ?? "")" />
                     </div>
                     <div class="password form-item">
                         <label for="password">Mật khẩu (<span class="important-item">*</span>)</label>
