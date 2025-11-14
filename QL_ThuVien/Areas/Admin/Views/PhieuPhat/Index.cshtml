@@ -1,0 +1,69 @@
+﻿@model IEnumerable<QL_ThuVien.Models.PHIPHAT>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Các phiếu mượn bị phạt", new List<Tuple<string, string>> {
+    Tuple.Create("Các phiếu mượn bị phạt", "/Admin/PhieuPhat")
+}))
+
+
+@if (ViewBag.NoAccess != null && (bool)ViewBag.NoAccess)
+{
+    <div class="alert alert-warning">
+        <h4>Bạn không có quyền truy cập trang này</h4>
+    </div>
+}
+else
+{
+
+    <div class="overview-block">
+        <div class="overview-item total-products">
+            <h3 class="overview-item__title total-products__title">Tổng số phiếu mượn</h3>
+            <p class="overview-item__detail">@((Model != null) ? Model.Count() : 0)</p>
+        </div>
+    </div>
+
+    <div class="list-account list-table">
+        <table class="list-account__table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mã phiếu mượn</th>
+                    <th>Số ngày trễ</th>
+                    <th>Tiền phạt</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(item.maPHIPHAT)</td>
+                            <td>
+                                <a href="@Url.Action("Details", "PhieuMuon", new { maPMUON = item.maPMUON, area = "Admin" })" class="link-btn text-primary">@item.maPMUON</a>
+                                
+                            </td>
+                            <td>@(item.SoNgayQuaHan)</td>
+                            <td>@(item.tienPhat)</td>
+     
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            <p class="noProducts">Không có phiếu phạt nào hiển thị.</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+

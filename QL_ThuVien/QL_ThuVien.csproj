@@ -128,6 +128,7 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\NXBController.cs" />
     <Compile Include="Areas\Admin\Controllers\PhieuMuonController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PhieuPhatController.cs" />
     <Compile Include="Areas\Admin\Controllers\SachController.cs" />
     <Compile Include="Areas\Admin\Controllers\TheLoaiController.cs" />
     <Compile Include="Areas\Admin\Controllers\TacGiaController.cs" />
@@ -516,6 +517,8 @@
     <Content Include="Areas\Admin\Views\PhieuMuon\Create.cshtml" />
     <Content Include="Areas\Admin\Views\PhieuMuon\Details.cshtml" />
     <Content Include="Areas\Admin\Views\PhieuMuon\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\PhieuMuon\ReturnBooks.cshtml" />
+    <Content Include="Areas\Admin\Views\PhieuPhat\Index.cshtml" />
     <None Include="Models\Database.dbml.layout">
       <DependentUpon>Database.dbml</DependentUpon>
     </None>
@@ -548,6 +551,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\services\" />
+    <Folder Include="Areas\Admin\Views\PhiPhat\" />
     <Folder Include="Content\images\sach\" />
   </ItemGroup>
   <ItemGroup>

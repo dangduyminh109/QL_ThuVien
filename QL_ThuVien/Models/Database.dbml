@@ -52,6 +52,14 @@
       <Association Name="DOCGIA_PHIEUMUON" Member="PHIEUMUONs" ThisKey="maDocGia" OtherKey="maDocGia" Type="PHIEUMUON" />
     </Type>
   </Table>
+  <Table Name="dbo.NXB" Member="NXBs">
+    <Type Name="NXB">
+      <Column Name="maNXB" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="tenNXB" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="diaChi" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="NXB_SACH" Member="SACHes" ThisKey="maNXB" OtherKey="maNXB" Type="SACH" />
+    </Type>
+  </Table>
   <Table Name="dbo.NHANVIEN" Member="NHANVIENs">
     <Type Name="NHANVIEN">
       <Column Name="maNV" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -64,14 +72,6 @@
       <Column Name="DBUserName" Type="System.String" DbType="NVarChar(128)" CanBeNull="true" />
       <Association Name="NHANVIEN_PHANCONG" Member="PHANCONGs" ThisKey="maNV" OtherKey="maNV" Type="PHANCONG" />
       <Association Name="NHANVIEN_PHIEUMUON" Member="PHIEUMUONs" ThisKey="maNV" OtherKey="maNV" Type="PHIEUMUON" />
-    </Type>
-  </Table>
-  <Table Name="dbo.NXB" Member="NXBs">
-    <Type Name="NXB">
-      <Column Name="maNXB" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="tenNXB" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="diaChi" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Association Name="NXB_SACH" Member="SACHes" ThisKey="maNXB" OtherKey="maNXB" Type="SACH" />
     </Type>
   </Table>
   <Table Name="dbo.PHANCONG" Member="PHANCONGs">
@@ -92,6 +92,7 @@
       <Column Name="maDocGia" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="maNV" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="PHIEUMUON_CTPHIEUMUON" Member="CTPHIEUMUONs" ThisKey="maPMUON" OtherKey="maPMUON" Type="CTPHIEUMUON" />
+      <Association Name="PHIEUMUON_PHIPHAT" Member="PHIPHATs" ThisKey="maPMUON" OtherKey="maPMUON" Type="PHIPHAT" />
       <Association Name="DOCGIA_PHIEUMUON" Member="DOCGIA" ThisKey="maDocGia" OtherKey="maDocGia" Type="DOCGIA" IsForeignKey="true" />
       <Association Name="NHANVIEN_PHIEUMUON" Member="NHANVIEN" ThisKey="maNV" OtherKey="maNV" Type="NHANVIEN" IsForeignKey="true" />
     </Type>
@@ -128,6 +129,15 @@
       <Column Name="maTL" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="tenTL" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
       <Association Name="THELOAI_SACH" Member="SACHes" ThisKey="maTL" OtherKey="maTL" Type="SACH" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PHIPHAT" Member="PHIPHATs">
+    <Type Name="PHIPHAT">
+      <Column Name="maPHIPHAT" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="maPMUON" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SoNgayQuaHan" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="tienPhat" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="PHIEUMUON_PHIPHAT" Member="PHIEUMUON" ThisKey="maPMUON" OtherKey="maPMUON" Type="PHIEUMUON" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

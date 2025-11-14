@@ -1,0 +1,125 @@
+﻿@using QL_ThuVien.Models
+@model QL_ThuVien.Areas.Admin.Controllers.PhieuMuonController.PhieuMuonDetailsViewModel
+@{
+    ViewBag.Title = "ReturnBooks";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@Html.Partial("_PageHeader", Tuple.Create("Trả sách", new List<Tuple<string, string>> {
+    Tuple.Create("Phiếu mượn", "/Admin/PhieuMuon"),
+    Tuple.Create("Trả sách", $"/Admin/PhieuMuon/ReturnBooks/{ViewBag.maPMUON}")
+}))
+
+<div class="create account">
+    @using (Html.BeginForm("SearchPhieuMuon", "PhieuMuon", FormMethod.Post, new { area = "Admin" }))
+    {
+        @Html.AntiForgeryToken()
+        //@Html.Hidden("maPMUON", (int)ViewBag.maPMUON)
+
+        if (!ViewData.ModelState.IsValid)
+        {
+            @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+        }
+
+        <h1 class="title">Thông tin phiếu mượn</h1>
+        <div class="general">
+            <div class="form-group d-flex align-items-end gap-2">
+                <div class="form-item flex-grow-1">
+                    <label>Nhập mã phiếu mượn</label>
+                    <input type="number" name="maPMUON" class="form-control" placeholder="Nhập mã phiếu mượn" required 
+                           value="@ViewBag.MaPMUON"/>
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Search</button>
+            </div>
+        </div>
+        if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+        }
+
+        if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger mt-2">@TempData["ErrorMessage"]</div>
+        }
+
+        if (Model != null && Model.PhieuMuon != null)
+        {
+            <div class="detail account">
+                <h1 class="title">Thông tin phiếu mượn</h1>
+                <div class="general">
+                    <div class="form-group">
+                        <div class="form-item">
+                            <p class="label"><b>Mã phiếu mượn</b></p>
+                            <p class="content">@Model.PhieuMuon.maPMUON</p>
+                        </div>
+                        <div class="form-item">
+                            <p class="label"><b>Độc giả</b></p>
+                            <p class="content">@(Model.PhieuMuon.DOCGIA?.hoTenDG ?? "Chưa cập nhật")</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-item">
+                            <p class="label"><b>Nhân viên lập phiếu</b></p>
+                            <p class="content">@(Model.PhieuMuon.NHANVIEN?.hoTenNV ?? "Chưa cập nhật")</p>
+                        </div>
+                        <div class="form-item">
+                            <p class="label"><b>Ngày mượn</b></p>
+                            <p class="content">@(Model.PhieuMuon.ngayMuon?.ToString("dd/MM/yyyy"))</p>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <p class="label"><b>Trạng thái trả</b></p>
+                        <p class="content">
+                            @(Model.PhieuMuon.daTra == true ? "Đã trả" : "Chưa trả")
+                        </p>
+                    </div>
+                    <h2 class="title mt-4">Danh sách sách mượn</h2>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Tên sách</th>
+                                <th>Số lượng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.SachMuonDetails != null && Model.SachMuonDetails.Any())
+                            {
+                                foreach (var item in Model.SachMuonDetails)
+                                {
+                                    <tr>
+                                        <td>@item.tenSach</td>
+                                        <td>@item.soLuong</td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="2">Chưa có sách mượn nào.</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+
+
+    }
+        @if (TempData["err"] != null)
+        {
+            <div class="alert alert-danger mt-2">@TempData["err"]</div>
+        }
+        @if (TempData["success"] != null)
+        {
+            <div class="alert alert-success mt-2">@TempData["success"]</div>
+        }
+        <div class="form-group__btn mt-3">
+            <a href="@Url.Action("Index", "PhieuMuon", new { area = "Admin" })" class="btn btn-secondary">Quay lại</a>
+            <form action="@Url.Action("ReturnBooks", "PhieuMuon", new { area = "Admin" })" method="post">
+                <input type="hidden" name="maPMUON" value="@ViewBag.MaPMUON" />
+                <button type="submit" class="btn btn-primary">Trả sách</button>
+            </form>
+        </div>
+</div>
+
