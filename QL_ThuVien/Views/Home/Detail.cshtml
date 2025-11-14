@@ -1,0 +1,144 @@
+﻿@model QL_ThuVien.Controllers.BookDetailViewModel
+
+@{
+    ViewBag.Title = "Chi tiết sách";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    body {
+        background: #fefefe;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #212529;
+    }
+
+    h2 {
+        font-weight: 700;
+        color: #212529;
+        text-align: center;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 1.1px;
+    }
+
+    .card {
+        max-width: 800px;
+        margin: 0 auto 3rem;
+        border-radius: 14px;
+        box-shadow: 0 12px 25px rgb(0 0 0 / 0.1);
+        background: #fff;
+        padding: 2rem;
+    }
+
+    .card-title {
+        font-size: 2rem;
+        font-weight: 900;
+        margin-bottom: 1.5rem;
+        color: #0d6efd;
+        text-align: center;
+        letter-spacing: 1.2px;
+    }
+
+    .book-image {
+        width: 100%;
+        max-height: 350px;
+        object-fit: contain;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 6px 15px rgb(0 0 0 / 0.1);
+    }
+
+    dl {
+        font-size: 1.05rem;
+        color: #444;
+        max-width: 100%;
+    }
+
+    dt {
+        font-weight: 700;
+        color: #495057;
+        padding-top: 0.7rem;
+    }
+
+    dd {
+        margin-left: 0;
+        padding-bottom: 0.8rem;
+        color: #666;
+    }
+
+    .description {
+        font-size: 1rem;
+        line-height: 1.5;
+        margin-top: 1.5rem;
+        color: #555;
+        background: #f8f9fa;
+        padding: 1rem 1.5rem;
+        border-radius: 12px;
+        box-shadow: inset 0 0 8px rgb(0 0 0 / 0.05);
+        white-space: pre-wrap;
+    }
+
+    .btn-secondary {
+        display: block;
+        width: 160px;
+        margin: 2rem auto 0;
+        border-radius: 25px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 700;
+        box-shadow: 0 4px 12px rgb(108 117 125 / 0.4);
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-secondary:hover {
+            background-color: #495057;
+            color: #fff;
+            box-shadow: 0 6px 18px rgb(73 80 87 / 0.6);
+        }
+</style>
+
+<div class="card">
+    <h2>Chi tiết sách</h2>
+
+    <img class="book-image"
+         src="@(string.IsNullOrEmpty(Model.AnhBia) ? Url.Content("~/Content/images/default-image.jpg") : Url.Content(Model.AnhBia))"
+         alt="Ảnh bìa @Model.TenSach" />
+
+    <h3 class="card-title">@Model.TenSach</h3>
+
+    <dl class="row">
+        <dt class="col-sm-4">Tác giả:</dt>
+        <dd class="col-sm-8">@Model.TenTacGia</dd>
+
+        <dt class="col-sm-4">Nhà xuất bản:</dt>
+        <dd class="col-sm-8">@Model.TenNXB</dd>
+
+        <dt class="col-sm-4">Thể loại:</dt>
+        <dd class="col-sm-8">@Model.TenTheLoai</dd>
+
+        <dt class="col-sm-4">Năm xuất bản:</dt>
+        <dd class="col-sm-8">@Model.NamXuatBan?.ToString() ?? "Không rõ"</dd>
+
+        <dt class="col-sm-4">Tổng số lượng:</dt>
+        <dd class="col-sm-8">@Model.SoLuong?.ToString() ?? "Không rõ"</dd>
+
+        <dt class="col-sm-4">Số lượng còn lại:</dt>
+        <dd class="col-sm-8 fw-semibold text-success">@Model.SlConLai</dd>
+    </dl>
+
+    <div class="description">
+        @if (!string.IsNullOrEmpty(Model.MoTa))
+        {
+            @Html.Raw(Model.MoTa)
+        }
+        else
+        {
+            <em>Chưa có mô tả cho sách này.</em>
+        }
+    </div>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Quay lại danh sách</a>
+</div>
