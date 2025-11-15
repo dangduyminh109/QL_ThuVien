@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace QL_ThuVien.Areas.Admin.Controllers
@@ -442,5 +443,103 @@ namespace QL_ThuVien.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public ActionResult ReturnBooks()
+        {
+            
+            return View();
+        }
+
+        public ActionResult SearchPhieuMuon(int? maPMUON)
+        {
+
+            ViewBag.MaPMUON = maPMUON;
+            if (Db == null)
+                return RedirectToAction("DangNhap", "Auth", new { area = "Admin" });
+
+
+            var phieuMuon = Db.PHIEUMUONs.FirstOrDefault(p => p.maPMUON == maPMUON);
+            if (phieuMuon == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy phiếu mượn!";
+                return RedirectToAction("ReturnBooks");
+            }
+            if (phieuMuon.daTra == true)
+            {
+                TempData["ErrorMessage"] = "Mã phiếu này đã được trả trước đó";
+                return RedirectToAction("ReturnBooks");
+            }
+
+            // 
+            var conn = Db.Connection as SqlConnection;
+
+            var mustClose = (conn.State == ConnectionState.Closed);
+            if (mustClose) conn.Open();
+            var cmd = conn.CreateCommand();
+
+            cmd.CommandText = "SELECT dbo.FNC_kiemTraHopLe(@maPMUON)";
+            cmd.CommandType = CommandType.Text;
+            cmd.Parameters.AddWithValue("@maPMUON", maPMUON);
+            var check = cmd.ExecuteScalar();
+            if (!Convert.ToBoolean(check))
+            {
+                TempData["err"] = "Phiếu mươn này đã trễ hạn";
+            }
+
+
+            var chiTiet = (from c in Db.CTPHIEUMUONs
+                           join s in Db.SACHes on c.maSach equals s.maSach
+                           where c.maPMUON == maPMUON
+                           select new SachMuonDetailViewModel
+                           {
+                               maSach = c.maSach,
+                               tenSach = s.tenSach,
+                               soLuong = c.soLuong
+                           }).ToList();
+
+            var model = new PhieuMuonDetailsViewModel
+            {
+                PhieuMuon = phieuMuon,
+                SachMuonDetails = chiTiet
+            };
+
+
+            return View("ReturnBooks", model);
+        }
+
+        [HttpPost]
+        public ActionResult ReturnBooks(int? maPMUON)
+        {
+            if(maPMUON == null)
+            {
+                TempData["err"] = "Mã phiếu trống";
+                return View();
+            }
+            try
+            {
+                var conn = Db.Connection as SqlConnection;
+
+                var mustClose = (conn.State == ConnectionState.Closed);
+                if (mustClose) conn.Open();
+                var cmd = conn.CreateCommand();
+
+                cmd.CommandText = "sp_traSach";
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@maPM", maPMUON);
+                cmd.ExecuteNonQuery();
+
+                if (mustClose) conn.Close();
+                TempData["SuccessMessage"] = "Trả sách thành công";
+                return RedirectToAction("Index");
+            }
+            catch (SqlException ex)
+            {
+                TempData["err"] = "Đã có lỗi xảy ra";
+                ModelState.AddModelError("", ex.Message);
+                return View();
+            }
+        }
+
+
     }
 }

@@ -89,15 +89,34 @@
                 </div>
             </li>
 
+
             <li class="navigation-item">
-                <a href="/Admin/PhieuMuon" class="navigation-item__btn btn single" data-menu="list-borrow-slip">
+                <button class="navigation-item__btn btn" id="btn-phieumuon" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#collapse-phieumuon"
+                        aria-expanded="false" aria-controls="collapse-phieumuon">
                     <span class="navigation-item__icon-btn">
-                        <i class="fa-solid fa-file-invoice"></i>
+                        <i class="fa-solid fa-users"></i>
                     </span>
                     Quản lý phiếu mượn
-                </a>
+                    <span class="navigation-item__icon-btn-down">
+                        <i class="fa-solid fa-caret-down"></i>
+                    </span>
+                </button>
+                <div class="collapse navigation-item__collapse" id="collapse-phieumuon">
+                    <a class="navigation-item__link" href="/Admin/PhieuMuon" data-menu="list-phieumuon">
+                        <span class="navigation-item__icon">
+                            <i class="fa-solid fa-list"></i>
+                        </span>
+                        <h3 class="navigation-item__title">Danh sách phiếu mượn</h3>
+                    </a>
+                    <a class="navigation-item__link" href="/Admin/CaLamViec" data-menu="phieumuon-shift">
+                        <span class="navigation-item__icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </span>
+                        <h3 class="navigation-item__title">Phiếu mượn bị phạt</h3>
+                    </a>
+                </div>
             </li>
-
         </ul>
     </div>
 </nav>

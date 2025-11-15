@@ -43,6 +43,9 @@ else
                 <a href="@Url.Action("Create", "PhieuMuon", new { area = "Admin" })" class="btn btn-primary">
                     <span class="icon-btn"><i class="fa-solid fa-plus"></i></span> Tạo phiếu mượn mới
                 </a>
+                <a href="@Url.Action("ReturnBooks", "PhieuMuon", new { area = "Admin" })" class="btn btn-success">
+                    <span class="icon-btn"><i class="fa-solid fa-plus"></i></span> Trả sách
+                </a>
             </div>
         </div>
     </div>
@@ -58,6 +61,7 @@ else
         <table class="list-account__table">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Độc giả</th>
                     <th>Nhân viên</th>
                     <th>Ngày mượn</th>
@@ -72,6 +76,7 @@ else
                     foreach (var item in Model)
                     {
                         <tr>
+                            <td>@(item.maPMUON)</td>
                             <td>@(item.DOCGIA?.hoTenDG ?? "N/A")</td>
                             <td>@(item.NHANVIEN?.hoTenNV ?? "N/A")</td>
                             <td>@(item.ngayMuon.HasValue ? item.ngayMuon.Value.ToString("dd/MM/yyyy") : "-")</td>
