@@ -8,7 +8,7 @@ namespace QL_ThuVien.Areas.Admin.Controllers
     public class AuthController : Controller
     {
         // Sửa nếu tên server / database khác
-        private readonly string _server = "LAPTOP-KHNRIK62\\SQLEXPRESS";
+        private readonly string _server = "LAPTOP-3F26GI9M";
         private readonly string _database = "QL_THUVIEN";
 
         // Hiển thị form đăng nhập

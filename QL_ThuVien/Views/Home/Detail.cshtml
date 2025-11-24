@@ -120,10 +120,10 @@
         <dd class="col-sm-8">@Model.TenTheLoai</dd>
 
         <dt class="col-sm-4">Năm xuất bản:</dt>
-        <dd class="col-sm-8">@Model.NamXuatBan?.ToString() ?? "Không rõ"</dd>
+        <dd class="col-sm-8">@(Model.NamXuatBan.HasValue ? Model.NamXuatBan.ToString() : "Không rõ")</dd>
 
         <dt class="col-sm-4">Tổng số lượng:</dt>
-        <dd class="col-sm-8">@Model.SoLuong?.ToString() ?? "Không rõ"</dd>
+        <dd class="col-sm-8">@(Model.SoLuong.HasValue ? Model.SoLuong.ToString() : "Không rõ")</dd>
 
         <dt class="col-sm-4">Số lượng còn lại:</dt>
         <dd class="col-sm-8 fw-semibold text-success">@Model.SlConLai</dd>

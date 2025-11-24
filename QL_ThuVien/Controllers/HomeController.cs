@@ -16,7 +16,9 @@ namespace QL_ThuVien.Controllers
         {
             // CHÚ Ý: thay Server/Database nếu cần. Nếu bạn có typed DataContext (VD: QLThuVienDataContext),
             // thay new DataContext(...) bằng new QLThuVienDataContext(connStr)
-            var connStr = @"Server=.;Database=QL_ThuVien;User Id=reader;Password=123;Trusted_Connection=False;";
+            //var connStr = @"Server=.;Database=QL_ThuVien;User Id=reader;Password=123;Trusted_Connection=False;";
+            //_db = new DataContext(connStr);
+            var connStr = @"Server=LAPTOP-3F26GI9M;Database=QL_THUVIEN;User Id=reader;Password=dat23062005;Trusted_Connection=True;";
             _db = new DataContext(connStr);
         }
 
@@ -104,6 +106,56 @@ namespace QL_ThuVien.Controllers
                 return RedirectToAction("Index");
             }
         }
+
+        public ActionResult TimKiem(string keyword)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(keyword))
+                    return RedirectToAction("Index");
+
+                var sachTable = _db.GetTable<SACH>();
+                var tgTable = _db.GetTable<TACGIA>();
+                var nxbTable = _db.GetTable<NXB>();
+                var tlTable = _db.GetTable<THELOAI>();
+
+                keyword = keyword.Trim().ToLower();
+
+                var list = (from s in sachTable
+                            join tg in tgTable on s.maTG equals tg.maTG into tgJoin
+                            from tg in tgJoin.DefaultIfEmpty()
+                            join nxb in nxbTable on s.maNXB equals nxb.maNXB into nxbJoin
+                            from nxb in nxbJoin.DefaultIfEmpty()
+                            join tl in tlTable on s.maTL equals tl.maTL into tlJoin
+                            from tl in tlJoin.DefaultIfEmpty()
+                            where
+                                s.tenSach.ToLower().Contains(keyword) ||
+                                (tg.hoTenTG ?? "").ToLower().Contains(keyword) ||
+                                (tl.tenTL ?? "").ToLower().Contains(keyword) ||
+                                (nxb.tenNXB ?? "").ToLower().Contains(keyword)
+                            orderby s.tenSach
+                            select new BookCardViewModel
+                            {
+                                maSach = s.maSach,
+                                TenSach = s.tenSach,
+                                TenTacGia = tg != null ? tg.hoTenTG : "",
+                                TenNXB = nxb != null ? nxb.tenNXB : "",
+                                TenTheLoai = tl != null ? tl.tenTL : "",
+                                SlConLai = s.SlConLai ?? 0,
+                                AnhBia = s.anhBia
+                            }
+                        ).ToList();
+
+                ViewBag.Title = $"Kết quả tìm kiếm cho: {keyword}";
+                return View("Index", list);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = "Lỗi tìm kiếm: " + ex.Message;
+                return RedirectToAction("Index");
+            }
+        }
+
 
         protected override void Dispose(bool disposing)
         {
