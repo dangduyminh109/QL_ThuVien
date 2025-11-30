@@ -1,136 +1,68 @@
-﻿@{
+﻿@using QL_ThuVien.Models
+@{
     ViewBag.Title = "Thống Kê Tổng Quan";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2 class="fw-bold mb-4 text-center">📊 Tổng Quan Thư Viện</h2>
+@section Styles{
+    <link href="~/Content/admin/css/page/create-edit-detail.css" rel="stylesheet" />
+}
 
-<style>
-    .stat-card {
-        border-radius: 15px;
-        transition: 0.25s;
-    }
+@Html.Partial("_PageHeader", Tuple.Create("Tổng Quan", new List<Tuple<string, string>> {
+    Tuple.Create("Dashboard", "/Admin"),
+    Tuple.Create("Tổng Quan", "/Admin/Home/Index")
+}))
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(0,0,0,0.15) !important;
-        }
+<div class="detail dashboard">
+    <h1 class="title text-center">Tổng Quan Thư Viện</h1>
 
-    .stat-icon {
-        opacity: 0.8;
-    }
-</style>
+    <div class="general">
+        <div class="form-group">
+            <div class="form-item">
+                <p class="label"><b>Tổng số SÁCH</b></p>
+                <p class="content">@((ViewBag.SoLuongSach ?? 0).ToString()) <span class="muted">cuốn</span></p>
+            </div>
 
-<div class="container">
+            <div class="form-item">
+                <p class="label"><b>Tổng số ĐỘC GIẢ</b></p>
+                <p class="content">@((ViewBag.SoLuongDocGia ?? 0).ToString()) <span class="muted">người</span></p>
+            </div>
 
-    <!-- TỔNG QUAN -->
-    <div class="row flex-column gap-3">
-
-        <div class="col">
-            <div class="card bg-primary text-white shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Tổng số SÁCH</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoLuongSach ?? 0)</div>
-                    </div>
-                    <i class="fas fa-book fa-3x stat-icon"></i>
-                </div>
+            <div class="form-item">
+                <p class="label"><b>Tổng PHIẾU MƯỢN</b></p>
+                <p class="content">@((ViewBag.SoLuongPhieuMuon ?? 0).ToString()) <span class="muted">phiếu</span></p>
             </div>
         </div>
 
-        <div class="col">
-            <div class="card bg-success text-white shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Tổng số ĐỘC GIẢ</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoLuongDocGia ?? 0)</div>
-                    </div>
-                    <i class="fas fa-users fa-3x stat-icon"></i>
-                </div>
+        <div class="form-group">
+            <div class="form-item">
+                <p class="label"><b>Phiếu mượn chưa trả</b></p>
+                <p class="content">@((ViewBag.SoPhieuMuonChuaTra ?? 0).ToString()) <span class="muted">phiếu</span></p>
+            </div>
+
+            <div class="form-item">
+                <p class="label"><b>Tổng số NHÂN VIÊN</b></p>
+                <p class="content">@((ViewBag.SoLuongNhanVien ?? 0).ToString()) <span class="muted">người</span></p>
+            </div>
+
+            <div class="form-item">
+                <p class="label"><b>Tổng số THỂ LOẠI</b></p>
+                <p class="content">@((ViewBag.SoLuongTheLoai ?? 0).ToString()) <span class="muted">thể loại</span></p>
             </div>
         </div>
 
-        <div class="col">
-            <div class="card bg-warning text-dark shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Tổng PHIẾU MƯỢN</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoLuongPhieuMuon ?? 0)</div>
-                    </div>
-                    <i class="fas fa-clipboard-list fa-3x stat-icon"></i>
-                </div>
+        <div class="form-group">
+            <div class="form-item">
+                <p class="label"><b>Tổng số TÁC GIẢ</b></p>
+                <p class="content">@((ViewBag.SoLuongTacGia ?? 0).ToString()) <span class="muted">tác giả</span></p>
+            </div>
+
+            <div class="form-item">
+                <p class="label"><b>Tổng số NXB</b></p>
+                <p class="content">@((ViewBag.SoLuongNXB ?? 0).ToString()) <span class="muted">NXB</span></p>
+            </div>
+            <div class="form-item">
             </div>
         </div>
-
-        <div class="col">
-            <div class="card bg-danger text-white shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Phiếu mượn chưa trả</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoPhieuMuonChuaTra ?? 0)</div>
-                    </div>
-                    <i class="fas fa-hourglass-half fa-3x stat-icon"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card bg-dark text-white shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Tổng số NHÂN VIÊN</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoLuongNhanVien ?? 0)</div>
-                    </div>
-                    <i class="fas fa-user-tie fa-3x stat-icon"></i>
-                </div>
-            </div>
-        </div>
-
     </div>
-
-    <hr class="my-5" />
-
-    <!-- PHÂN LOẠI -->
-    <h3 class="fw-bold mb-3 text-center">📂 Phân loại dữ liệu</h3>
-
-    <div class="row flex-column gap-3">
-
-        <div class="col">
-            <div class="card bg-secondary text-white shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Tổng số THỂ LOẠI</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoLuongTheLoai ?? 0)</div>
-                    </div>
-                    <i class="fas fa-tags fa-3x stat-icon"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card bg-info text-white shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Tổng số TÁC GIẢ</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoLuongTacGia ?? 0)</div>
-                    </div>
-                    <i class="fas fa-feather-alt fa-3x stat-icon"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="col">
-            <div class="card bg-dark text-white shadow stat-card">
-                <div class="card-body d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="small text-uppercase">Tổng số NXB</div>
-                        <div class="h4 fw-bold">@(ViewBag.SoLuongNXB ?? 0)</div>
-                    </div>
-                    <i class="fas fa-building fa-3x stat-icon"></i>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
 </div>

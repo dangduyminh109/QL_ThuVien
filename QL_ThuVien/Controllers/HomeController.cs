@@ -18,7 +18,7 @@ namespace QL_ThuVien.Controllers
             // thay new DataContext(...) bằng new QLThuVienDataContext(connStr)
             //var connStr = @"Server=.;Database=QL_ThuVien;User Id=reader;Password=123;Trusted_Connection=False;";
             //_db = new DataContext(connStr);
-            var connStr = @"Server=LAPTOP-3F26GI9M;Database=QL_THUVIEN;User Id=reader;Password=dat23062005;Trusted_Connection=True;";
+            var connStr = @"Server=DDM-LEGION\SQLEXPRESS;Database=QL_ThuVien;User Id=reader;Password=123;Trusted_Connection=False;";
             _db = new DataContext(connStr);
         }
 
